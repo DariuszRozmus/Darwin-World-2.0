@@ -45,7 +45,7 @@ public class WorldMap implements MoveValidator {
         RandomPositionGenerator jungleRandomPositionGenerator =
                 new RandomPositionGenerator(jungleWidth, jungleHeight, junglePlant);
         jungleRandomPositionGenerator.iterator()
-                .forEachRemaining(vector2d -> plants.put(vector2d,new Grass(vector2d,20)));
+                .forEachRemaining(vector2d -> plants.put(vector2d.add(jungleDownCorner),new Grass(vector2d,20)));
     }
 
     public boolean isOccupiedByPlant(Vector2d position){
