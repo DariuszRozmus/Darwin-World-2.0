@@ -4,12 +4,17 @@ import model.Vector2d;
 
 import java.util.*;
 
+import static java.lang.Math.min;
+
 public class RandomPositionGenerator implements Iterable<Vector2d> {
     private final List<Vector2d> positions;
     private int amount;
     private final Random random = new Random();
     private int counter = 0;
 
+    public RandomPositionGenerator(int width, int height){
+        this(width,height,width*height);
+    }
     public RandomPositionGenerator(int width, int height, int amount) {
         positions = new ArrayList<>();
         for (int x = 0; x <= width; x++) {
@@ -18,7 +23,7 @@ public class RandomPositionGenerator implements Iterable<Vector2d> {
                 positions.add(position);
             }
         }
-        this.amount = amount;
+        this.amount = min(amount,(width+1)*(height+1));
     }
 
     @Override
