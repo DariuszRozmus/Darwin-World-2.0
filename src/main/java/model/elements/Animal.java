@@ -72,4 +72,8 @@ public abstract class Animal implements WorldElement{
         }
     }
 
+    public String toString(){
+        return "@";
+    }
+
 }

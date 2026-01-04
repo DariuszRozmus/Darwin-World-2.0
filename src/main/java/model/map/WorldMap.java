@@ -15,6 +15,7 @@ public class WorldMap implements MoveValidator {
 
     private Map<Vector2d, List<Animal>> animals = new HashMap<Vector2d, List<Animal>>();
     private Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
+    private MapVisualizer mapVisualizer;
     
     private static final Vector2d DOWN_CORNER = new Vector2d(0,0);
     private final Vector2d mapUpCorner;
@@ -30,6 +31,7 @@ public class WorldMap implements MoveValidator {
         this.jungleUpCorner = jungleUpCorner;
         this.junglePlant = junglePlant;
         this.mapPlant = mapPlant;
+        this.mapVisualizer = new MapVisualizer(this);
         
         int mapWidth = mapUpCorner.getX();
         int mapHeight = mapUpCorner.getY();
@@ -76,5 +78,13 @@ public class WorldMap implements MoveValidator {
     }
     private boolean isInBounds(Vector2d position){
         return mapUpCorner.follows(position) && DOWN_CORNER.precedes(position);
+    }
+
+    public Vector2d getMapUpCorner(){
+        return mapUpCorner;
+    }
+
+    public String toString(){
+        return mapVisualizer.draw(DOWN_CORNER,mapUpCorner);
     }
 }
