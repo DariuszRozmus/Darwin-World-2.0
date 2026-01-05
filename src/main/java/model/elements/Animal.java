@@ -5,11 +5,8 @@ import model.map.MapDirection;
 import model.map.MoveValidator;
 import model.map.WorldMap;
 
-import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
-
-import static java.lang.Math.random;
 
 public abstract class Animal implements WorldElement{
 
