@@ -22,6 +22,7 @@ public abstract class Animal implements WorldElement{
 
     private final int birthDay;
     private boolean live = true;
+    private boolean hasMoved = false;
 
     private final UUID uuid = UUID.randomUUID();
     private final WorldMap worldMap;
@@ -62,6 +63,10 @@ public abstract class Animal implements WorldElement{
         return live;
     }
 
+    public boolean isHasMoved(){
+        return hasMoved;
+    }
+
     public void decreaseEnergy(int energy){
         this.energy -= energy;
         live = this.energy > 0;
@@ -87,10 +92,13 @@ public abstract class Animal implements WorldElement{
         if(moveValidator.canMoveTo(newPosition)){
             this.direction = direction.nextSteps(gene.getRotation());
             this.position = newPosition;
+            this.hasMoved = true;
         } else {
             this.direction = direction.oppositeDirection();
         }
     }
+
+    public int compareTo(Object obj){return 0;}
 
     public String toString(){
         return "@";
