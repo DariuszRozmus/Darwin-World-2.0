@@ -84,7 +84,7 @@ public abstract class Animal implements WorldElement{
         Gene gene = geneList.poll();
         geneList.offer(gene);
         Vector2d newPosition = position.add(direction.toUnitVector());
-        if(moveValidator.canMoveTo(position)){
+        if(moveValidator.canMoveTo(newPosition)){
             this.direction = direction.nextSteps(gene.getRotation());
             this.position = newPosition;
         } else {
