@@ -54,6 +54,22 @@ public abstract class Animal implements WorldElement{
         return birthDay;
     }
 
+    public boolean isLive(){
+        return live;
+    }
+
+    public void decreaseEnergy(int energy){
+        this.energy -= energy;
+        live = this.energy > 0;
+//        if(!live){
+//            this.died();
+//        }
+    }
+
+//    public void died(){
+//        worldMap.killAnimal(this);
+//    }
+
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
