@@ -87,9 +87,11 @@ public class WorldMap implements MoveValidator {
         return isInBounds(position);
     }
 
-    public void killAnimal(Animal animal){
-//        animalLiveList.remove(animal);
+    public void removeFromMap(Animal animal){
         this.removeAnimal(animal);
+    }
+
+    public void registerDeath(Animal animal){
         animalsDiedList.add(animal);
     }
 
