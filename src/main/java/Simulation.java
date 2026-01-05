@@ -38,13 +38,24 @@ public class Simulation implements Runnable{
         System.out.println(worldMap);
 
         for (int i = 0; i < 22; i++){
-            worldMap.getAnimalLiveList().stream()
-                    .filter(animal -> !animal.isLive())
-                    .forEach(animal -> worldMap.killAnimal(animal));
-            worldMap.getAnimalsDiedList()
-                    .forEach(animal -> worldMap.getAnimalLiveList().remove(animal));
+            worldMap.getAnimalLiveList()
+                    .removeIf(animal -> {
+                        if(!animal.isLive()){
+                            worldMap.removeFromMap(animal);
+                            worldMap.registerDeath(animal);
+                            return true;
+                        }
+                        return false;
+                    });
             worldMap.getAnimalLiveList()
                     .forEach(animal -> worldMap.move(animal));
+            //TODO eat
+//            worldMap.getPlants().keySet().stream()
+//                    .filter(position ->
+//                            animalWaiter.canEat(worldMap.getAnimalsMap().get(position))
+//                    ).
+//
+//            );
             worldMap.getAnimalLiveList()
                     .forEach(animal -> animal.decreaseEnergy(worldMap.getAnimalLiveList().indexOf(animal)+1));
             System.out.println(worldMap);
