@@ -133,6 +133,10 @@ public class WorldMap implements MoveValidator {
     public List<Animal> getAnimalsDiedList(){
         return animalsDiedList;
     }
+
+    public Map<Vector2d, Plant> getPlants(){
+        return plants;
+    }
     public String toString(){
         return mapVisualizer.draw(DOWN_CORNER,mapUpCorner);
     }

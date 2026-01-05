@@ -1,15 +1,16 @@
 import model.elements.Herbivore;
+import model.map.AnimalWaiter;
 import model.map.RandomAnimalGenerator;
 import model.map.RandomPositionGenerator;
 import model.map.WorldMap;
-
-import java.util.List;
 
 public class Simulation implements Runnable{
 
     private WorldMap worldMap;
     private RandomPositionGenerator randomPositionGenerator;
     private RandomAnimalGenerator randomAnimalGenerator = new RandomAnimalGenerator();
+    private AnimalWaiter animalWaiter = new AnimalWaiter();
+
     private int startAnimals;
     private int startGeneLengthAnimals;
     private int startEnergyAnimal;
