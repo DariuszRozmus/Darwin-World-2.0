@@ -65,19 +65,35 @@ public class WorldMap implements MoveValidator {
 
     public WorldElement objectAt(Vector2d position){
         if (isOccupiedByAnimal(position)){
-            return animals.get(position).getFirst();
+            return animalsMap.get(position).getFirst();
         } else // It's occupied by plant ->
             return plants.get(position);
     }
 
-    public void place(Animal animal){
-        animals
+    public void addToMap(Animal animal){
+        animalsMap
             .computeIfAbsent(animal.getPosition(), vector2d -> new ArrayList<>())
             .add(animal);
+        animalsLiveList.add(animal);
     }
+
+    public void place(Animal animal) {
+        animalsMap
+                .computeIfAbsent(animal.getPosition(), vector2d -> new ArrayList<>())
+                .add(animal);
+    }
+
     public boolean canMoveTo(Vector2d position){
         return isInBounds(position);
     }
+
+    public void killAnimal(Animal animal){
+//        animalLiveList.remove(animal);
+        this.removeAnimal(animal);
+        animalsDiedList.add(animal);
+    }
+
+
     private boolean isInBounds(Vector2d position){
         return mapUpCorner.follows(position) && DOWN_CORNER.precedes(position);
     }
@@ -86,6 +102,37 @@ public class WorldMap implements MoveValidator {
         return mapUpCorner;
     }
 
+    public void removeAnimal(Animal animal){
+        List<Animal> animalsAtPosition = animalsMap.get(animal.getPosition());
+        animalsAtPosition.remove(animal);
+    }
+
+    public void removeFromPosition(Animal animal, Vector2d position){
+        List<Animal> animalsAtPosition = animalsMap.get(position);
+        animalsAtPosition.remove(animal);
+    }
+
+    public void move(Animal animal){
+        Vector2d oldPosition = animal.getPosition();
+        animal.move(this);
+        Vector2d newPosition = animal.getPosition();
+        if (newPosition != oldPosition){
+            this.place(animal);
+            this.removeFromPosition(animal,oldPosition);
+        }
+    }
+
+    public Map<Vector2d, List<Animal>> getAnimalsMap(){
+        return animalsMap;
+    }
+
+    public List<Animal> getAnimalLiveList(){
+        return animalsLiveList;
+    }
+
+    public List<Animal> getAnimalsDiedList(){
+        return animalsDiedList;
+    }
     public String toString(){
         return mapVisualizer.draw(DOWN_CORNER,mapUpCorner);
     }
