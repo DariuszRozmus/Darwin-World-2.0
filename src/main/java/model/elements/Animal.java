@@ -95,7 +95,7 @@ public abstract class Animal implements WorldElement{
         }
     }
 
-    public int compareTo(Object obj){return 0;}
+    public int compareTo(WorldElement worldElement){return 0;}
 
     public String toString(){
         return "@";

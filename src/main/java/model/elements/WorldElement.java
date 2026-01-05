@@ -4,12 +4,11 @@ import model.Vector2d;
 
 import java.util.UUID;
 
-public interface WorldElement extends Comparable{
+public interface WorldElement extends Comparable<WorldElement> {
 
     Vector2d getPosition();
 
     UUID getUUID();
 
-    @Override
-    int compareTo(Object o);
+    int compareTo(WorldElement worldElement);
 }
