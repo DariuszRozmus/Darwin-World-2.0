@@ -13,7 +13,9 @@ import java.util.Map;
 
 public class WorldMap implements MoveValidator {
 
-    private Map<Vector2d, List<Animal>> animals = new HashMap<Vector2d, List<Animal>>();
+    private Map<Vector2d, List<Animal>> animalsMap = new HashMap<Vector2d, List<Animal>>();
+    private List<Animal> animalsLiveList = new ArrayList<>();
+    private List<Animal> animalsDiedList = new ArrayList<>();
     private Map<Vector2d, Plant> plants = new HashMap<Vector2d, Plant>();
     private MapVisualizer mapVisualizer;
     
@@ -53,7 +55,7 @@ public class WorldMap implements MoveValidator {
     }
 
     public boolean isOccupiedByAnimal(Vector2d position) {
-        List<Animal> list = animals.get(position);
+        List<Animal> list = animalsMap.get(position);
         return list != null && !list.isEmpty();
     }
 
