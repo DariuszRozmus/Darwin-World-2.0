@@ -3,6 +3,8 @@ import model.map.RandomAnimalGenerator;
 import model.map.RandomPositionGenerator;
 import model.map.WorldMap;
 
+import java.util.List;
+
 public class Simulation implements Runnable{
 
     private WorldMap worldMap;
@@ -26,12 +28,26 @@ public class Simulation implements Runnable{
     public void run() {
         randomPositionGenerator.iterator()
                 .forEachRemaining(vector2d
-                        -> worldMap.place(
+                        -> worldMap.addToMap(
                                 new Herbivore(0,
                                         startEnergyAnimal,
                                         randomAnimalGenerator.getGeneQueue(startGeneLengthAnimals),
                                         randomAnimalGenerator.getMapDirection(),
-                                        vector2d)));
+                                        vector2d, worldMap)));
         System.out.println(worldMap);
+
+        for (int i = 0; i < 22; i++){
+            worldMap.getAnimalLiveList().stream()
+                    .filter(animal -> !animal.isLive())
+                    .forEach(animal -> worldMap.killAnimal(animal));
+            worldMap.getAnimalsDiedList()
+                    .forEach(animal -> worldMap.getAnimalLiveList().remove(animal));
+            worldMap.getAnimalLiveList()
+                    .forEach(animal -> worldMap.move(animal));
+            worldMap.getAnimalLiveList()
+                    .forEach(animal -> animal.decreaseEnergy(worldMap.getAnimalLiveList().indexOf(animal)+1));
+            System.out.println(worldMap);
+            worldMap.getAnimalLiveList().forEach(animal -> System.out.println(animal.getPosition()));
+        }
     }
 }
