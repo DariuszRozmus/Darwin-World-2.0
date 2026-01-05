@@ -60,5 +60,4 @@ public enum MapDirection {
             case NORTHWEST -> "NorthWest";
         };
     }
-
 }
