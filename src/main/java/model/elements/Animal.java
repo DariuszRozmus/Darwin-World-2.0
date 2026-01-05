@@ -3,6 +3,7 @@ package model.elements;
 import model.Vector2d;
 import model.map.MapDirection;
 import model.map.MoveValidator;
+import model.map.WorldMap;
 
 import java.util.List;
 import java.util.Queue;
@@ -20,18 +21,21 @@ public abstract class Animal implements WorldElement{
     private int energy;
 
     private final int birthDay;
+    private boolean live = true;
 
     private final UUID uuid = UUID.randomUUID();
+    private final WorldMap worldMap;
 
     private Queue<Gene> geneList;
 
     public Animal (int birthDay, int energy, Queue<Gene> geneList,
-                   MapDirection direction, Vector2d position){
+                   MapDirection direction, Vector2d position, WorldMap worldMap){
         this.birthDay = birthDay;
         this.energy = energy;
         this.direction = direction;
         this.position = position;
         this.geneList = geneList;
+        this.worldMap = worldMap;
     }
 
     public MapDirection getDirection(){
