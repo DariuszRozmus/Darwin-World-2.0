@@ -24,4 +24,8 @@ public abstract class Plant implements WorldElement{
     public UUID getUUID() {
         return uuid;
     }
+
+    public void grow(int energy){
+        this.energy += energy;
+    }
 }
