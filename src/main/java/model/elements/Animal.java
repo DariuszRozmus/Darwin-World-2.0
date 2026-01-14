@@ -24,15 +24,15 @@ public abstract class Animal implements WorldElement{
     private final UUID uuid = UUID.randomUUID();
     private final WorldMap worldMap;
 
-    private Queue<Gene> geneList;
+    private Queue<Gene> genes;
 
-    public Animal (int birthDay, int energy, Queue<Gene> geneList,
+    public Animal (int birthDay, int energy, Queue<Gene> genes,
                    MapDirection direction, Vector2d position, WorldMap worldMap){
         this.birthDay = birthDay;
         this.energy = energy;
         this.direction = direction;
         this.position = position;
-        this.geneList = geneList;
+        this.genes = genes;
         this.worldMap = worldMap;
     }
 
@@ -56,6 +56,13 @@ public abstract class Animal implements WorldElement{
         return birthDay;
     }
 
+    public Queue<Gene> getGene(){
+        return genes;
+    }
+//    TODO
+//    public Species getSpecies(){
+//        return worldMap.getSpeciesAt(position);
+//    }
     public boolean isLive(){
         return live;
     }
@@ -67,38 +74,53 @@ public abstract class Animal implements WorldElement{
     public void decreaseEnergy(int energy){
         this.energy -= energy;
         live = this.energy > 0;
-//        if(!live){
-//            this.died();
-//        }
     }
 
-//    public void died(){
-//        worldMap.killAnimal(this);
-//    }
+    public void increaseEnergy(int energy){
+        this.energy += energy;
+        live = this.energy > 0;
+    }
 
     public boolean isAt(Vector2d position) {
         return this.position.equals(position);
     }
 
     public void move(MoveValidator moveValidator){
-        if(geneList.isEmpty()) return;
+        if(genes.isEmpty()) return;
 
-        Gene gene = geneList.poll();
-        geneList.offer(gene);
+        Gene gene = genes.poll();
+        genes.offer(gene);
+        this.direction = direction.nextSteps(gene.getRotation());
         Vector2d newPosition = position.add(direction.toUnitVector());
         if(moveValidator.canMoveTo(newPosition)){
-            this.direction = direction.nextSteps(gene.getRotation());
             this.position = newPosition;
             this.hasMoved = true;
         } else {
             this.direction = direction.oppositeDirection();
+            this.hasMoved = false;
         }
     }
 
-    public int compareTo(WorldElement worldElement){return 0;}
+    @Override
+    public int compareTo(WorldElement worldElement){
+        if(worldElement instanceof Animal otherAnimal){
+            return Integer.compare(otherAnimal.energy, this.energy);
+        }
+        return 0;
+    }
 
     public String toString(){
-        return "@";
+        switch (direction){
+            case NORTH ->  {return "↑";}
+            case EAST ->   {return "→";}
+            case SOUTH ->  {return "↓";}
+            case WEST ->   {return "←";}
+            case NORTHEAST -> {return "↗";}
+            case NORTHWEST -> {return "↖";}
+            case SOUTHEAST -> {return "↘";}
+            case SOUTHWEST -> {return "↙";}
+            default -> {return "?";}
+        }
     }
 
 }
