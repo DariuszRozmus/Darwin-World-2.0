@@ -1,0 +1,58 @@
+package model.map;
+
+import model.elements.Animal;
+import model.elements.Gene;
+import model.elements.Herbivore;
+import model.elements.Species;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.lang.Math.floor;
+import static java.lang.Math.min;
+
+public class Breeder {
+
+    private static final int MIN_ENERGY = 10;
+
+
+    public void breedBest(List<Animal> animalList, int simulationDay, WorldMap worldMap){
+        if (animalList.isEmpty()) {
+            return;
+        }
+        animalList.sort(Animal::compareTo);
+        Animal animal1 = animalList.removeLast();
+        Animal animal2 = animalList.removeLast();
+
+        if (animal1.getEnergy() < MIN_ENERGY || animal2.getEnergy() < MIN_ENERGY){
+            return;
+        }
+        int energy1 = animal1.getEnergy() / 2;
+        animal1.decreaseEnergy(energy1);
+        Queue<Gene> genes1 = animal1.getGene();
+
+        int energy2 = animal2.getEnergy() / 2;
+        animal2.decreaseEnergy(energy2);
+        Queue<Gene> genes2 = animal2.getGene();
+
+        int gen1len = genes1.size() / energy1;
+        int gen2len = genes2.size() / energy2;
+
+        int factor = min(gen1len,gen2len);
+
+        Queue<Gene> newGene1 = genes1.stream()
+                .limit(factor).collect(Collectors.toCollection(ArrayDeque::new));
+        Queue<Gene> newGene2 = genes2.stream()
+                .limit(factor).collect(Collectors.toCollection(ArrayDeque::new));
+
+        Queue<Gene> newGene = new ArrayDeque<>();
+        newGene.addAll(newGene1);
+        newGene.addAll(newGene2);
+
+        int newEnergy = energy1 + energy2;
+        Animal animal =
+                new Herbivore(simulationDay, newEnergy, newGene,
+                        animal1.getDirection(), animal1.getPosition(), worldMap);
+        worldMap.place(animal);
+    }
+}
