@@ -119,6 +119,27 @@ public class WorldMap implements MoveValidator {
         animalsAtPosition.remove(animal);
     }
 
+    public void removePlant(Plant plant){
+        plants.remove(plant.getPosition(),plant);
+    }
+
+//    public void eatPlants(AnimalWaiter animalWaiter) {
+//
+//    }
+
+    public void eatPlantAt(Vector2d position, AnimalWaiter waiter) {
+        Plant plant = plants.get(position);
+        if (plant == null) return;
+
+        var animals = animalsMap.get(position);
+        if (animals == null || animals.isEmpty()) return;
+
+        waiter.feedBest(plant.getEnergy(), animals);
+
+        plants.remove(position);
+    }
+
+
     public void removeFromPosition(Animal animal, Vector2d position){
         List<Animal> animalsAtPosition = animalsMap.get(position);
         animalsAtPosition.remove(animal);
