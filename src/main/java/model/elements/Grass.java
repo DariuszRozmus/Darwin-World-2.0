@@ -10,4 +10,9 @@ public class Grass extends Plant{
     public String toString(){
         return "*";
     }
+
+    @Override
+    public int compareTo(WorldElement worldElement) {
+        return 0;
+    }
 }
