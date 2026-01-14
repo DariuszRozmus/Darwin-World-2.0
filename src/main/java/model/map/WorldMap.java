@@ -6,10 +6,7 @@ import model.elements.Grass;
 import model.elements.Plant;
 import model.elements.WorldElement;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WorldMap implements MoveValidator {
 
@@ -25,6 +22,8 @@ public class WorldMap implements MoveValidator {
     private final Vector2d jungleUpCorner;
     private final int junglePlant;
     private final int mapPlant;
+    private final Set<Vector2d> junglePositionsSet = new HashSet<>();
+    private final Set<Vector2d> savannaPositionsSet = new HashSet<>();
 
     public WorldMap(Vector2d mapUpCorner, Vector2d jungleDownCorner, Vector2d jungleUpCorner,
                     int junglePlant, int mapPlant){
@@ -34,20 +33,31 @@ public class WorldMap implements MoveValidator {
         this.junglePlant = junglePlant;
         this.mapPlant = mapPlant;
         this.mapVisualizer = new MapVisualizer(this);
-        
-        int mapWidth = mapUpCorner.getX();
-        int mapHeight = mapUpCorner.getY();
-        RandomPositionGenerator mapRandomPositionGenerator =
-                new RandomPositionGenerator(mapWidth, mapHeight, mapPlant);
-        mapRandomPositionGenerator.iterator()
-                .forEachRemaining(vector2d -> plants.put(vector2d,new Grass(vector2d,20)));
 
-        int jungleWidth = jungleUpCorner.subtract(jungleDownCorner).getX();
-        int jungleHeight = jungleUpCorner.subtract(jungleDownCorner).getY();
-        RandomPositionGenerator jungleRandomPositionGenerator =
-                new RandomPositionGenerator(jungleWidth, jungleHeight, junglePlant);
+        for (int x = jungleDownCorner.getX(); x <= jungleUpCorner.getX(); x++) {
+            for (int y = jungleDownCorner.getY(); y <= jungleUpCorner.getY(); y++) {
+                Vector2d position = new Vector2d(x, y);
+                junglePositionsSet.add(position);
+            }
+        }
+
+        for (int x = DOWN_CORNER.getX(); x <= mapUpCorner.getX(); x++) {
+            for (int y = DOWN_CORNER.getY(); y <= mapUpCorner.getY(); y++) {
+                Vector2d position = new Vector2d(x, y);
+                if (!junglePositionsSet.contains(position)) {
+                    savannaPositionsSet.add(position);
+                }
+            }
+        }
+
+        RandomPositionGenerator savannaRandomPositionGenerator =
+                new RandomPositionGenerator(savannaPositionsSet, mapPlant);
+        savannaRandomPositionGenerator.iterator()
+                .forEachRemaining(vector2d -> plants.put(vector2d, new Grass(vector2d,20)));
+
+        RandomPositionGenerator jungleRandomPositionGenerator = new RandomPositionGenerator(junglePositionsSet, junglePlant);
         jungleRandomPositionGenerator.iterator()
-                .forEachRemaining(vector2d -> plants.put(vector2d.add(jungleDownCorner),new Grass(vector2d,20)));
+                .forEachRemaining(vector2d -> plants.put(vector2d, new Grass(vector2d,20)));
     }
 
     public boolean isOccupiedByPlant(Vector2d position){

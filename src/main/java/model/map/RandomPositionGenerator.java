@@ -12,9 +12,6 @@ public class RandomPositionGenerator implements Iterable<Vector2d> {
     private final Random random = new Random();
     private int counter = 0;
 
-    public RandomPositionGenerator(int width, int height){
-        this(width,height,width*height);
-    }
     public RandomPositionGenerator(int width, int height, int amount) {
         positions = new ArrayList<>();
         for (int x = 0; x <= width; x++) {
@@ -24,6 +21,15 @@ public class RandomPositionGenerator implements Iterable<Vector2d> {
             }
         }
         this.amount = min(amount,(width+1)*(height+1));
+    }
+
+    public RandomPositionGenerator(int width, int height){
+        this(width,height,width*height);
+    }
+
+    public RandomPositionGenerator(Set<Vector2d> positionsSet, int amount){
+        this.positions = new ArrayList<>(positionsSet);
+        this.amount = min(amount, positions.size());
     }
 
     @Override
