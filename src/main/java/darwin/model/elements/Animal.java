@@ -8,7 +8,7 @@ import model.map.WorldMap;
 import java.util.Queue;
 import java.util.UUID;
 
-public abstract class Animal implements WorldElement{
+public class Animal implements WorldElement{
 
 
     private MapDirection direction;
@@ -20,16 +20,18 @@ public abstract class Animal implements WorldElement{
     private final int birthDay;
     private boolean live = true;
     private boolean hasMoved = false;
+    private final Species specie;
 
     private final UUID uuid = UUID.randomUUID();
     private final WorldMap worldMap;
 
     private Queue<Gene> genes;
 
-    public Animal (int birthDay, int energy, Queue<Gene> genes,
+    public Animal (int birthDay, int energy, Species specie, Queue<Gene> genes,
                    MapDirection direction, Vector2d position, WorldMap worldMap){
         this.birthDay = birthDay;
         this.energy = energy;
+        this.specie = specie;
         this.direction = direction;
         this.position = position;
         this.genes = genes;
@@ -59,10 +61,11 @@ public abstract class Animal implements WorldElement{
     public Queue<Gene> getGene(){
         return genes;
     }
-//    TODO
-//    public Species getSpecies(){
-//        return worldMap.getSpeciesAt(position);
-//    }
+
+    public Species getSpecie(){
+        return specie;
+    }
+
     public boolean isLive(){
         return live;
     }
