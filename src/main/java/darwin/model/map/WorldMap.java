@@ -1,20 +1,17 @@
 package darwin.model.map;
 
-<<<<<<< Updated upstream
-import model.Vector2d;
-import model.elements.Animal;
-import model.elements.Grass;
-import model.elements.Plant;
-import model.elements.WorldElement;
-import config.PreliminaryData;
-=======
 import darwin.model.Vector2d;
 import darwin.model.elements.Animal;
 import darwin.model.elements.Grass;
 import darwin.model.elements.Plant;
 import darwin.model.elements.WorldElement;
 import darwin.config.PreliminaryData;
->>>>>>> Stashed changes
+import darwin.model.Vector2d;
+import darwin.model.elements.Animal;
+import darwin.model.elements.Grass;
+import darwin.model.elements.Plant;
+import darwin.model.elements.WorldElement;
+import darwin.config.PreliminaryData;
 
 import java.util.*;
 

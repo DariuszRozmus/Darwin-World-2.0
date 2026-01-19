@@ -1,12 +1,10 @@
 package darwin.model.map;
 
-<<<<<<< Updated upstream
-import model.elements.Animal;
-import model.elements.Gene;
-=======
 import darwin.model.elements.Animal;
 import darwin.model.elements.Gene;
->>>>>>> Stashed changes
+
+import darwin.model.elements.Animal;
+import darwin.model.elements.Gene;
 
 import java.util.*;
 import java.util.stream.Collectors;
