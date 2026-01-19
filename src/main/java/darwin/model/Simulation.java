@@ -1,13 +1,10 @@
-import model.Vector2d;
-import model.elements.Herbivore;
-import model.elements.Plant;
-import model.map.*;
+package darwin.model.map;
 
-import java.util.ArrayList;
-import java.util.List;
+import darwin.config.PreliminaryData;
+import darwin.model.elements.Animal;
+import darwin.model.elements.Species;
+
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Simulation implements Runnable{
 
@@ -16,23 +13,28 @@ public class Simulation implements Runnable{
     private RandomAnimalGenerator randomAnimalGenerator = new RandomAnimalGenerator();
     private AnimalWaiter animalWaiter = new AnimalWaiter();
 
-    private static final int DAY_DECREASE_ENERGY = 10;
-    private static final int PLANT_ENERGY = 20;
-    private static final int PLANTS_PER_DAY = 5;
+    private final int dayDecreaseEnergy;
+    private final int plantEnergy;
+    private final int newPlantsPerDay;
 
     private int startAnimals;
     private int startGeneLengthAnimals;
     private int startEnergyAnimal;
     private int day = 0;
-    private final Breeder breeder = new Breeder();
     private final Planter planter = new Planter();
+    private final Breeder breeder;
 
 
-    public Simulation(WorldMap worldMap, int startAnimals, int startEnergyAnimal, int startGeneLengthAnimals){
+    public Simulation(WorldMap worldMap, PreliminaryData data){
         this.worldMap = worldMap;
-        this.startAnimals = startAnimals;
-        this.startEnergyAnimal = startEnergyAnimal;
-        this.startGeneLengthAnimals = startGeneLengthAnimals;
+        this.startAnimals = data.initialAnimalCount();
+        this.startEnergyAnimal = data.initialAnimalEnergy();
+        this.startGeneLengthAnimals = data.initialGenesLength();
+        this.dayDecreaseEnergy = data.dailyEnergyCost();
+        this.plantEnergy = data.plantEnergyValue();
+        this.newPlantsPerDay = data.dailyNewPlantsCount();
+        this.breeder = new Breeder(data.energyToReproduce(), data.reproductionEnergyFactor(),
+                data.minMutationCount(), data.maxMutationCount());
         this.randomPositionGenerator =
                 new RandomPositionGenerator(worldMap.getMapUpCorner().getX(),
                 worldMap.getMapUpCorner().getY(), startAnimals);
@@ -42,8 +44,8 @@ public class Simulation implements Runnable{
         randomPositionGenerator.iterator()
                 .forEachRemaining(vector2d
                         -> worldMap.addToMap(
-                                new Herbivore(day,
-                                        startEnergyAnimal,
+                                new Animal(day,
+                                        startEnergyAnimal, Species.HERBIVORE,
                                         randomAnimalGenerator.getGeneQueue(startGeneLengthAnimals),
                                         randomAnimalGenerator.getMapDirection(),
                                         vector2d, worldMap)));
@@ -115,10 +117,10 @@ public class Simulation implements Runnable{
     }
     private void decreaseAnimalEnergy(){
         worldMap.getAnimalLiveList()
-                .forEach(animal -> animal.decreaseEnergy(DAY_DECREASE_ENERGY));
+                .forEach(animal -> animal.decreaseEnergy(dayDecreaseEnergy));
     }
 
     private void plantNewPlants(){
-        planter.plant(PLANTS_PER_DAY, PLANT_ENERGY, worldMap);
+        planter.plant(newPlantsPerDay, plantEnergy, worldMap);
     }
 }
