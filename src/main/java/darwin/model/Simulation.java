@@ -1,17 +1,10 @@
-<<<<<<< Updated upstream
-package darwin.model.map;
-=======
 package darwin.model;
->>>>>>> Stashed changes
 
 import darwin.config.PreliminaryData;
 import darwin.model.elements.Animal;
 import darwin.model.elements.Species;
-<<<<<<< Updated upstream
-=======
 import darwin.model.map.*;
 import darwin.presenter.SimulationPresenter;
->>>>>>> Stashed changes
 
 import java.util.Map;
 
@@ -32,17 +25,10 @@ public class Simulation implements Runnable{
     private int day = 0;
     private final Planter planter = new Planter();
     private final Breeder breeder;
-<<<<<<< Updated upstream
-
-
-    public Simulation(WorldMap worldMap, PreliminaryData data){
-=======
     private final SimulationPresenter simulationPresenter;
-
 
     public Simulation(WorldMap worldMap, SimulationPresenter simulationPresenter, PreliminaryData data){
         this.simulationPresenter = simulationPresenter;
->>>>>>> Stashed changes
         this.worldMap = worldMap;
         this.startAnimals = data.initialAnimalCount();
         this.startEnergyAnimal = data.initialAnimalEnergy();
