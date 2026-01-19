@@ -1,13 +1,3 @@
-<<<<<<< Updated upstream
-package presenter;
-
-import model.map.WorldMap;
-
-public class SimulationPresenter {
-
-    private WorldMap worldMap;
-    private Simula
-=======
 package darwin.presenter;
 
 import darwin.model.Simulation;
@@ -91,5 +81,4 @@ public class SimulationPresenter {
 //        graphics.setFill(black);
     }
 
->>>>>>> Stashed changes
 }
