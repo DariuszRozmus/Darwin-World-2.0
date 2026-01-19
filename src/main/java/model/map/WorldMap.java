@@ -105,7 +105,6 @@ public class WorldMap implements MoveValidator {
         animalsDiedList.add(animal);
     }
 
-
     private boolean isInBounds(Vector2d position){
         return mapUpCorner.follows(position) && DOWN_CORNER.precedes(position);
     }
