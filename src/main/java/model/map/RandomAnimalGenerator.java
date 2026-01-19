@@ -5,7 +5,7 @@ import model.elements.Gene;
 import java.util.*;
 
 public class RandomAnimalGenerator {
-    private Random random = new Random();
+    private Random random = new Random(12345);
     public RandomAnimalGenerator(){}
 
     public Queue<Gene> getGeneQueue(int length){

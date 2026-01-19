@@ -9,7 +9,7 @@ import static java.lang.Math.min;
 public class RandomPositionGenerator implements Iterable<Vector2d> {
     private final List<Vector2d> positions;
     private int amount;
-    private final Random random = new Random();
+    private final Random random = new Random(12345);
     private int counter = 0;
 
     public RandomPositionGenerator(int width, int height, int amount) {

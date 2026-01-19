@@ -8,16 +8,20 @@ import model.elements.Species;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.lang.Math.floor;
-import static java.lang.Math.min;
+import static java.lang.Math.*;
 
 public class Breeder {
 
     private static final int MIN_ENERGY = 10;
+    private static final int ENERGY_DIVISOR = 4;
+    private static final int MIN_NEW_GENE_LENGTH = 4;
+    private static final int MAX_NEW_GENE_LENGTH = 32;
+    private final Random random = new Random(12345);
+    private final RandomAnimalGenerator randomAnimalGenerator = new RandomAnimalGenerator();
 
 
     public void breedBest(List<Animal> animalList, int simulationDay, WorldMap worldMap){
-        if (animalList.isEmpty()) {
+        if (animalList.size() < 2) {
             return;
         }
         animalList.sort(Animal::compareTo);
