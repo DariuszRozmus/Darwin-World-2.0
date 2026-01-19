@@ -1,9 +1,5 @@
 package darwin;
 
-<<<<<<< Updated upstream
-public class WorldGUI {
-}
-=======
 import darwin.view.SimulationApp;
 import javafx.application.Application;
 
@@ -15,4 +11,3 @@ public class WorldGUI {
     }
 }
 
->>>>>>> Stashed changes
