@@ -33,11 +33,6 @@ public class WorldMap implements MoveValidator {
     private final Set<Vector2d> savannaPositionsSet = new HashSet<>();
 
     public WorldMap(PreliminaryData data)
-<<<<<<< Updated upstream
-//    Vector2d mapUpCorner, Vector2d jungleDownCorner, Vector2d jungleUpCorner,
-//                    int junglePlant, int mapPlant
-=======
->>>>>>> Stashed changes
         {
         this.mapUpCorner = new Vector2d(data.worldWidth(), data.worldHeight());
         this.jungleDownCorner = data.jungleDownLeftCorner();

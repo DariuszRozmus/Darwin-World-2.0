@@ -9,26 +9,12 @@
 <?import javafx.scene.canvas.GraphicsContext?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-<<<<<<< Updated upstream
             minHeight="650.0" minWidth="850.0"
-            fx:controller="darwin.view.SimulationController">
-    <top>
-        <VBox>
-            <TextField fx:id="moveField" />
-            <Label fx:id="moveInfoLabel" text="All moves will be here!"/>
-        </VBox>
-
-
-    </top>
-    <center>
-        <!--        <Label fx:id="infoLabel" text="All animals will be living here!" textAlignment="CENTER"/>-->
-=======
-            minHeight="650.0" minWidth="950.0"
             fx:controller="darwin.presenter.SimulationPresenter">
     <center>
->>>>>>> Stashed changes
         <Canvas fx:id="mapGrid" />
     </center>
+
     <bottom>
         <Button fx:id="startButton" text="Start" />
     </bottom>

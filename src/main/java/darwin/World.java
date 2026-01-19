@@ -22,12 +22,8 @@ public class World {
                 4,2, 6);
 
         WorldMap worldMap = new WorldMap(data);
-<<<<<<< Updated upstream
-    Simulation simulation = new Simulation(worldMap, data);
-    simulation.run();
-=======
-
 //    Simulation simulation = new Simulation(worldMap, data);
 //    simulation.run();
->>>>>>> Stashed changes
+//    Simulation simulation = new Simulation(worldMap, data);
+//    simulation.run();
 }}
