@@ -31,32 +31,33 @@ public class Breeder {
         if (animal1.getEnergy() < MIN_ENERGY || animal2.getEnergy() < MIN_ENERGY){
             return;
         }
-        int energy1 = animal1.getEnergy() / 2;
+        int energy1 = animal1.getEnergy() / ENERGY_DIVISOR;
         animal1.decreaseEnergy(energy1);
         Queue<Gene> genes1 = animal1.getGene();
 
-        int energy2 = animal2.getEnergy() / 2;
+        int energy2 = animal2.getEnergy() / ENERGY_DIVISOR;
         animal2.decreaseEnergy(energy2);
         Queue<Gene> genes2 = animal2.getGene();
 
-        int gen1len = genes1.size() / energy1;
-        int gen2len = genes2.size() / energy2;
-
-        int factor = min(gen1len,gen2len);
+        int totalEnergy = energy1 + energy2;
+        int share1 = (int) ceil((double) (energy1 / totalEnergy) * genes1.size());
+        int share2 = (int) ceil((double) (energy2 / totalEnergy) * genes2.size());
 
         Queue<Gene> newGene1 = genes1.stream()
-                .limit(factor).collect(Collectors.toCollection(ArrayDeque::new));
+                .limit(share1).collect(Collectors.toCollection(ArrayDeque::new));
         Queue<Gene> newGene2 = genes2.stream()
-                .limit(factor).collect(Collectors.toCollection(ArrayDeque::new));
+                .limit(share2).collect(Collectors.toCollection(ArrayDeque::new));
 
         Queue<Gene> newGene = new ArrayDeque<>();
         newGene.addAll(newGene1);
         newGene.addAll(newGene2);
+        newGene.addAll(randomAnimalGenerator
+                .getGeneQueue(random.nextInt(MIN_NEW_GENE_LENGTH, MAX_NEW_GENE_LENGTH + 1)));
 
         int newEnergy = energy1 + energy2;
         Animal animal =
                 new Herbivore(simulationDay, newEnergy, newGene,
                         animal1.getDirection(), animal1.getPosition(), worldMap);
-        worldMap.place(animal);
+        worldMap.addToMap(animal);
     }
 }
