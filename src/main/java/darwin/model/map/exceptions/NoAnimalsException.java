@@ -1,4 +1,4 @@
-package model.map.exceptions;
+package darwin.model.map.exceptions;
 
 public class NoAnimalsException extends RuntimeException {
     public NoAnimalsException(String message) {

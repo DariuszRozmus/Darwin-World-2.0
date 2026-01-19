@@ -1,9 +1,9 @@
-package model.elements;
+package darwin.model.elements;
 
-import model.Vector2d;
-import model.map.MapDirection;
-import model.map.MoveValidator;
-import model.map.WorldMap;
+import darwin.model.Vector2d;
+import darwin.model.map.MapDirection;
+import darwin.model.map.MoveValidator;
+import darwin.model.map.WorldMap;
 
 import java.util.Queue;
 import java.util.UUID;

@@ -1,11 +1,20 @@
-package model.map;
+package darwin.model.map;
 
+<<<<<<< Updated upstream
 import model.Vector2d;
 import model.elements.Animal;
 import model.elements.Grass;
 import model.elements.Plant;
 import model.elements.WorldElement;
 import config.PreliminaryData;
+=======
+import darwin.model.Vector2d;
+import darwin.model.elements.Animal;
+import darwin.model.elements.Grass;
+import darwin.model.elements.Plant;
+import darwin.model.elements.WorldElement;
+import darwin.config.PreliminaryData;
+>>>>>>> Stashed changes
 
 import java.util.*;
 
@@ -27,8 +36,11 @@ public class WorldMap implements MoveValidator {
     private final Set<Vector2d> savannaPositionsSet = new HashSet<>();
 
     public WorldMap(PreliminaryData data)
+<<<<<<< Updated upstream
 //    Vector2d mapUpCorner, Vector2d jungleDownCorner, Vector2d jungleUpCorner,
 //                    int junglePlant, int mapPlant
+=======
+>>>>>>> Stashed changes
         {
         this.mapUpCorner = new Vector2d(data.worldWidth(), data.worldHeight());
         this.jungleDownCorner = data.jungleDownLeftCorner();

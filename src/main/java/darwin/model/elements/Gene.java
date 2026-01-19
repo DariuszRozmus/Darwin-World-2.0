@@ -1,6 +1,4 @@
-package model.elements;
-
-import model.map.MapDirection;
+package darwin.model.elements;
 
 public enum Gene {
     GENE_0,

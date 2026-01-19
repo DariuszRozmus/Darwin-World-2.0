@@ -1,6 +1,6 @@
-package model.map;
+package darwin.model.map;
 
-import model.elements.Gene;
+import darwin.model.elements.Gene;
 
 import java.util.*;
 

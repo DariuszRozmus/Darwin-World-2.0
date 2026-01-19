@@ -1,7 +1,7 @@
-package model.map;
+package darwin.model.map;
 
-import model.elements.Animal;
-import model.map.exceptions.NoAnimalsException;
+import darwin.model.elements.Animal;
+import darwin.model.map.exceptions.NoAnimalsException;
 
 import java.util.List;
 import java.util.Optional;

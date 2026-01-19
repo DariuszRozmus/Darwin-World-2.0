@@ -1,4 +1,4 @@
-package model.elements;
+package darwin.model.elements;
 
 public enum Species {
     HERBIVORE,

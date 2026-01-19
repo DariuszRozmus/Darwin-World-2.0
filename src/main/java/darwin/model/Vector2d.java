@@ -1,4 +1,4 @@
-package model;
+package darwin.model;
 
 import java.util.Objects;
 

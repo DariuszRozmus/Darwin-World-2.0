@@ -1,11 +1,12 @@
-package model.map;
+package darwin.model.map;
 
-import model.Vector2d;
-import model.elements.Grass;
+import darwin.model.Vector2d;
+import darwin.model.elements.Grass;
 
 import java.util.*;
 
 public class Planter {
+    private final Random random = new Random(12345);
 
     public void plant(int plant, int energy, WorldMap worldMap){
         Set< Vector2d> jungleSet = worldMap.getJunglePositionsSet();
@@ -19,8 +20,9 @@ public class Planter {
         System.out.println("Jungle plants to plant: " + junglePlant);
         System.out.println("Savanna plants to plant: " + savannaPlant);
 
-        Collections.shuffle(jungleList);
-        Collections.shuffle(savannaList);
+
+        Collections.shuffle(jungleList, random);
+        Collections.shuffle(savannaList, random);
 
         jungleList.stream().limit(junglePlant)
                 .map(vector2d -> new Grass(vector2d, energy))

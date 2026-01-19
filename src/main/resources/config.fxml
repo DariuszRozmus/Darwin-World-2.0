@@ -8,7 +8,24 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+<<<<<<< Updated upstream
             fx:controller="CONTROLLER_NAME"
             prefHeight="400.0" prefWidth="600.0">
 
+=======
+            fx:controller="darwin.config.ConfigController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="darwin.config.ConfigController">
+
+    <TextField fx:id="widthField" promptText="Map width"/>
+    <TextField fx:id="heightField" promptText="Map height"/>
+    <TextField fx:id="animalsField" promptText="Initial animals"/>
+    <TextField fx:id="seedField" promptText="Seed"/>
+
+    <Button fx:id="parseButton" text="Start simulation" />
+
+>>>>>>> Stashed changes
 </AnchorPane>

@@ -1,6 +1,15 @@
+<<<<<<< Updated upstream
 import config.PreliminaryData;
 import model.Vector2d;
 import model.map.WorldMap;
+=======
+package darwin;
+
+import darwin.config.PreliminaryData;
+import darwin.model.Vector2d;
+import darwin.model.Simulation;
+import darwin.model.map.WorldMap;
+>>>>>>> Stashed changes
 
 public class World {
     public static void main() {
@@ -15,6 +24,12 @@ public class World {
                 4,2, 6);
 
         WorldMap worldMap = new WorldMap(data);
+<<<<<<< Updated upstream
     Simulation simulation = new Simulation(worldMap, data);
     simulation.run();
+=======
+
+//    Simulation simulation = new Simulation(worldMap, data);
+//    simulation.run();
+>>>>>>> Stashed changes
 }}

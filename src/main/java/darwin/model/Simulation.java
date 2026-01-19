@@ -1,8 +1,17 @@
+<<<<<<< Updated upstream
 package darwin.model.map;
+=======
+package darwin.model;
+>>>>>>> Stashed changes
 
 import darwin.config.PreliminaryData;
 import darwin.model.elements.Animal;
 import darwin.model.elements.Species;
+<<<<<<< Updated upstream
+=======
+import darwin.model.map.*;
+import darwin.presenter.SimulationPresenter;
+>>>>>>> Stashed changes
 
 import java.util.Map;
 
@@ -23,9 +32,17 @@ public class Simulation implements Runnable{
     private int day = 0;
     private final Planter planter = new Planter();
     private final Breeder breeder;
+<<<<<<< Updated upstream
 
 
     public Simulation(WorldMap worldMap, PreliminaryData data){
+=======
+    private final SimulationPresenter simulationPresenter;
+
+
+    public Simulation(WorldMap worldMap, SimulationPresenter simulationPresenter, PreliminaryData data){
+        this.simulationPresenter = simulationPresenter;
+>>>>>>> Stashed changes
         this.worldMap = worldMap;
         this.startAnimals = data.initialAnimalCount();
         this.startEnergyAnimal = data.initialAnimalEnergy();
@@ -54,17 +71,60 @@ public class Simulation implements Runnable{
         while (day < 1000 && !worldMap.getAnimalLiveList().isEmpty()){
 
             removeDeathAnimals();
+            simulationPresenter.drawMap(worldMap);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             moveLiveAnimals();
+            simulationPresenter.drawMap(worldMap);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             eatPlants();
+            simulationPresenter.drawMap(worldMap);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             reproduceAnimals();
+            simulationPresenter.drawMap(worldMap);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             decreaseAnimalEnergy();
+            simulationPresenter.drawMap(worldMap);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             plantNewPlants();
+            simulationPresenter.drawMap(worldMap);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             System.out.println(worldMap);
             worldMap.getAnimalLiveList().forEach(animal -> System.out.println(animal.getPosition() + " Energy: " + animal.getEnergy()));
+
+            simulationPresenter.drawMap(worldMap);
             System.out.println(worldMap.getAnimalLiveList());
             System.out.println(worldMap.getAnimalsDiedList());
             System.out.println("Day" + day);
             nextDay();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
 //        System.out.println("All animals died at day: " + day);
     }

@@ -1,6 +1,6 @@
-package model.map;
+package darwin.model.map;
 
-import model.Vector2d;
+import darwin.model.Vector2d;
 
 import java.util.*;
 

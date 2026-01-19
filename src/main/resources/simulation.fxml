@@ -9,6 +9,7 @@
 <?import javafx.scene.canvas.GraphicsContext?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+<<<<<<< Updated upstream
             minHeight="650.0" minWidth="850.0"
             fx:controller="darwin.view.SimulationController">
     <top>
@@ -21,6 +22,11 @@
     </top>
     <center>
         <!--        <Label fx:id="infoLabel" text="All animals will be living here!" textAlignment="CENTER"/>-->
+=======
+            minHeight="650.0" minWidth="950.0"
+            fx:controller="darwin.presenter.SimulationPresenter">
+    <center>
+>>>>>>> Stashed changes
         <Canvas fx:id="mapGrid" />
     </center>
     <bottom>
