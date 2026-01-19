@@ -87,12 +87,16 @@ public class WorldMap implements MoveValidator {
         animalsLiveList.add(animal);
     }
 
-    public void place(Animal animal) {
+    public void placeAnimal(Animal animal) {
         animalsMap
                 .computeIfAbsent(animal.getPosition(), vector2d -> new ArrayList<>())
                 .add(animal);
     }
 
+    public void placePlant(Plant plant){
+        plants.put(plant.getPosition(),plant);
+    }
+    
     public boolean canMoveTo(Vector2d position){
         return isInBounds(position);
     }
@@ -113,18 +117,22 @@ public class WorldMap implements MoveValidator {
         return mapUpCorner;
     }
 
-    public void removeAnimal(Animal animal){
+    private void removeAnimal(Animal animal){
         List<Animal> animalsAtPosition = animalsMap.get(animal.getPosition());
         animalsAtPosition.remove(animal);
+    }
+
+    public Set<Vector2d> getJunglePositionsSet(){
+        return junglePositionsSet;
+    }
+
+    public Set<Vector2d> getSavannaPositionsSet(){
+        return savannaPositionsSet;
     }
 
     public void removePlant(Plant plant){
         plants.remove(plant.getPosition(),plant);
     }
-
-//    public void eatPlants(AnimalWaiter animalWaiter) {
-//
-//    }
 
     public void eatPlantAt(Vector2d position, AnimalWaiter waiter) {
         Plant plant = plants.get(position);
@@ -138,8 +146,7 @@ public class WorldMap implements MoveValidator {
         plants.remove(position);
     }
 
-
-    public void removeFromPosition(Animal animal, Vector2d position){
+    private void removeFromPosition(Animal animal, Vector2d position){
         List<Animal> animalsAtPosition = animalsMap.get(position);
         animalsAtPosition.remove(animal);
     }
@@ -149,7 +156,7 @@ public class WorldMap implements MoveValidator {
         animal.move(this);
         Vector2d newPosition = animal.getPosition();
         if (newPosition != oldPosition){
-            this.place(animal);
+            this.placeAnimal(animal);
             this.removeFromPosition(animal,oldPosition);
         }
     }
@@ -169,6 +176,7 @@ public class WorldMap implements MoveValidator {
     public Map<Vector2d, Plant> getPlants(){
         return plants;
     }
+
     public String toString(){
         return mapVisualizer.draw(DOWN_CORNER,mapUpCorner);
     }
