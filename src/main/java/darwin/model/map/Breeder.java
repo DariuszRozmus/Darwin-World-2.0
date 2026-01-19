@@ -2,8 +2,6 @@ package model.map;
 
 import model.elements.Animal;
 import model.elements.Gene;
-import model.elements.Herbivore;
-import model.elements.Species;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,13 +10,19 @@ import static java.lang.Math.*;
 
 public class Breeder {
 
-    private static final int MIN_ENERGY = 10;
-    private static final int ENERGY_DIVISOR = 4;
-    private static final int MIN_NEW_GENE_LENGTH = 4;
-    private static final int MAX_NEW_GENE_LENGTH = 32;
+    private final int minEnergyToReproduce;
+    private final int energyDivisor;
+    private final int minNewGeneLength;
+    private final int maxNewGeneLength;
     private final Random random = new Random(12345);
     private final RandomAnimalGenerator randomAnimalGenerator = new RandomAnimalGenerator();
 
+    public Breeder(int minEnergyToReproduce, int energyDivisor, int minNewGeneLength, int maxNewGeneLength){
+        this.minEnergyToReproduce = minEnergyToReproduce;
+        this.energyDivisor = energyDivisor;
+        this.minNewGeneLength = minNewGeneLength;
+        this.maxNewGeneLength = maxNewGeneLength;
+    }
 
     public void breedBest(List<Animal> animalList, int simulationDay, WorldMap worldMap){
         if (animalList.size() < 2) {
@@ -28,14 +32,14 @@ public class Breeder {
         Animal animal1 = animalList.removeLast();
         Animal animal2 = animalList.removeLast();
 
-        if (animal1.getEnergy() < MIN_ENERGY || animal2.getEnergy() < MIN_ENERGY){
+        if (animal1.getEnergy() < minEnergyToReproduce || animal2.getEnergy() < minEnergyToReproduce){
             return;
         }
-        int energy1 = animal1.getEnergy() / ENERGY_DIVISOR;
+        int energy1 = animal1.getEnergy() / energyDivisor;
         animal1.decreaseEnergy(energy1);
         Queue<Gene> genes1 = animal1.getGene();
 
-        int energy2 = animal2.getEnergy() / ENERGY_DIVISOR;
+        int energy2 = animal2.getEnergy() / energyDivisor;
         animal2.decreaseEnergy(energy2);
         Queue<Gene> genes2 = animal2.getGene();
 
@@ -52,11 +56,11 @@ public class Breeder {
         newGene.addAll(newGene1);
         newGene.addAll(newGene2);
         newGene.addAll(randomAnimalGenerator
-                .getGeneQueue(random.nextInt(MIN_NEW_GENE_LENGTH, MAX_NEW_GENE_LENGTH + 1)));
+                .getGeneQueue(random.nextInt(minNewGeneLength, maxNewGeneLength + 1)));
 
         int newEnergy = energy1 + energy2;
         Animal animal =
-                new Herbivore(simulationDay, newEnergy, newGene,
+                new Animal(simulationDay, newEnergy,  animal1.getSpecie(), newGene,
                         animal1.getDirection(), animal1.getPosition(), worldMap);
         worldMap.addToMap(animal);
     }

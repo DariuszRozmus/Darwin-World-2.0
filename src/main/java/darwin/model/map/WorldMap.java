@@ -5,6 +5,7 @@ import model.elements.Animal;
 import model.elements.Grass;
 import model.elements.Plant;
 import model.elements.WorldElement;
+import config.PreliminaryData;
 
 import java.util.*;
 
@@ -20,18 +21,20 @@ public class WorldMap implements MoveValidator {
     private final Vector2d mapUpCorner;
     private final Vector2d jungleDownCorner;
     private final Vector2d jungleUpCorner;
-    private final int junglePlant;
-    private final int mapPlant;
+    private final int initialJunglePlant;
+    private final int initialSavannaPlant;
     private final Set<Vector2d> junglePositionsSet = new HashSet<>();
     private final Set<Vector2d> savannaPositionsSet = new HashSet<>();
 
-    public WorldMap(Vector2d mapUpCorner, Vector2d jungleDownCorner, Vector2d jungleUpCorner,
-                    int junglePlant, int mapPlant){
-        this.mapUpCorner = mapUpCorner;
-        this.jungleDownCorner = jungleDownCorner;
-        this.jungleUpCorner = jungleUpCorner;
-        this.junglePlant = junglePlant;
-        this.mapPlant = mapPlant;
+    public WorldMap(PreliminaryData data)
+//    Vector2d mapUpCorner, Vector2d jungleDownCorner, Vector2d jungleUpCorner,
+//                    int junglePlant, int mapPlant
+        {
+        this.mapUpCorner = new Vector2d(data.worldWidth(), data.worldHeight());
+        this.jungleDownCorner = data.jungleDownLeftCorner();
+        this.jungleUpCorner = data.jungleUpRightCorner();
+        this.initialJunglePlant = data.initialJunglePlantCount();
+        this.initialSavannaPlant = data.initialSavannaPlantCount();
         this.mapVisualizer = new MapVisualizer(this);
 
         for (int x = jungleDownCorner.getX(); x <= jungleUpCorner.getX(); x++) {
@@ -51,11 +54,11 @@ public class WorldMap implements MoveValidator {
         }
 
         RandomPositionGenerator savannaRandomPositionGenerator =
-                new RandomPositionGenerator(savannaPositionsSet, mapPlant);
+                new RandomPositionGenerator(savannaPositionsSet, initialSavannaPlant);
         savannaRandomPositionGenerator.iterator()
                 .forEachRemaining(vector2d -> plants.put(vector2d, new Grass(vector2d,20)));
 
-        RandomPositionGenerator jungleRandomPositionGenerator = new RandomPositionGenerator(junglePositionsSet, junglePlant);
+        RandomPositionGenerator jungleRandomPositionGenerator = new RandomPositionGenerator(junglePositionsSet, initialJunglePlant);
         jungleRandomPositionGenerator.iterator()
                 .forEachRemaining(vector2d -> plants.put(vector2d, new Grass(vector2d,20)));
     }
