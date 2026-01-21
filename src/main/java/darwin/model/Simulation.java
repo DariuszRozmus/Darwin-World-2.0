@@ -151,6 +151,7 @@ public class Simulation implements Runnable{
                     if(!animal.isLive()){
                         worldMap.removeFromMap(animal);
                         worldMap.registerDeath(animal);
+                        animal.setDeathDay(day);
                         return true;
                     }
                     return false;

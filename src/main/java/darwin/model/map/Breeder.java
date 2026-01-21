@@ -65,6 +65,8 @@ public class Breeder {
         Animal animal =
                 new Animal(simulationDay, newEnergy,  animal1.getSpecie(), newGene,
                         animal1.getDirection(), animal1.getPosition(), worldMap);
+        animal1.increaseChildrenCount();
+        animal2.increaseChildrenCount();
         worldMap.addToMap(animal);
     }
 }

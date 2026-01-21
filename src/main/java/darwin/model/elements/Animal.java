@@ -19,6 +19,8 @@ public class Animal implements WorldElement{
 
     private final int birthDay;
     private boolean live = true;
+    private int deathDay = -1;
+    private int childrenCount = 0;
     private boolean hasMoved = false;
     private final Species specie;
 
@@ -82,6 +84,14 @@ public class Animal implements WorldElement{
     public void increaseEnergy(int energy){
         this.energy += energy;
         live = this.energy > 0;
+    }
+
+    public void increaseChildrenCount(){
+         this.childrenCount +=1;
+    }
+
+    public void setDeathDay(int deathDay){
+        this.deathDay = deathDay;
     }
 
     public boolean isAt(Vector2d position) {
