@@ -123,7 +123,9 @@ public class Simulation implements Runnable{
             System.out.println(worldMap);
             worldMap.getAnimalLiveList().forEach(animal -> System.out.println(animal.getPosition() + " Energy: " + animal.getEnergy()));
 
-            simulationPresenter.drawMap(worldMap);
+            Platform.runLater(() ->
+                    simulationPresenter.drawMap(worldMap));
+
             System.out.println(worldMap.getAnimalLiveList());
             System.out.println(worldMap.getAnimalsDiedList());
             System.out.println("Day" + day);
@@ -133,8 +135,9 @@ public class Simulation implements Runnable{
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+
         }
-//        System.out.println("All animals died at day: " + day);
+        System.out.println("All animals died at day: " + day);
     }
 
     private void nextDay(){
