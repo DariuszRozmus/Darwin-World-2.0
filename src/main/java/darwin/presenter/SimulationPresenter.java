@@ -8,11 +8,16 @@ import darwin.model.map.WorldMap;
 //import darwin.view.SimulationController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,29 +30,28 @@ public class SimulationPresenter {
     @FXML
     private Button startButton;
 
-    public SimulationPresenter( ){}
-
     @FXML
-    void initialize() {
+    private Button stopButton;
+
+    public void init(PreliminaryData data) {
+        WorldMap worldMap = new WorldMap(data);
+        Simulation simulation = new Simulation(worldMap, this, data);
+
+        Thread simThread = new Thread(simulation);
+        simThread.setDaemon(true);
+        simThread.start();
         startButton.setOnAction(actionEvent -> {
             startButton.setDisable(true);
-            PreliminaryData data = new PreliminaryData(
-                    6, 6,
-                    new Vector2d(2, 2),
-                    new Vector2d(4, 4),
-                    false, false, false,
-                    5,
-                    5, 5,
-                    3, 10,
-                    30, 10, 2, 20,
-                    4, 2, 6
-            );
-
-            WorldMap worldMap = new WorldMap(data);
-            Simulation simulation = new Simulation(worldMap,this, data);
-            Platform.runLater(() ->
-                    new Thread(simulation).start());
+            stopButton.setDisable(false);
+            simulation.setIsRunning(true);
         });
+      stopButton.setOnAction(actionEvent -> {
+            startButton.setDisable(false);
+            stopButton.setDisable(true);
+            simulation.setIsRunning(false);
+        });
+
+
     }
 
     public void drawMap(WorldMap worldMap){
