@@ -6,26 +6,64 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-<<<<<<< Updated upstream
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            fx:controller="darwin.config.ConfigController">
+    <center>
+        <VBox>
+            <TextField fx:id="worldWidth" promptText="worldWidth"/>
 
-=======
-            fx:controller="darwin.config.ConfigController"
-            prefHeight="400.0" prefWidth="600.0">
+            <TextField fx:id="worldHeight" promptText="worldHeight"/>
 
-    xmlns="http://javafx.com/javafx"
-    xmlns:fx="http://javafx.com/fxml"
-    fx:controller="darwin.config.ConfigController">
+            <TextField fx:id="jungleDownLeftCornerX" promptText="jungleDownLeftCornerX"/>
 
-    <TextField fx:id="widthField" promptText="Map width"/>
-    <TextField fx:id="heightField" promptText="Map height"/>
-    <TextField fx:id="animalsField" promptText="Initial animals"/>
-    <TextField fx:id="seedField" promptText="Seed"/>
+            <TextField fx:id="jungleDownLeftCornerY" promptText="jungleDownLeftCornerY"/>
 
-    <Button fx:id="parseButton" text="Start simulation" />
+            <TextField fx:id="jungleUpRightCornerX" promptText="jungleUpRightCornerX"/>
 
->>>>>>> Stashed changes
-</AnchorPane>
+            <TextField fx:id="jungleUpRightCornerY" promptText="jungleUpRightCornerY"/>
+
+            <TextField fx:id="isFOMO" promptText="isFOMO"/>
+
+            <TextField fx:id="areCarnivoresPresent" promptText="areCarnivoresPresent"/>
+<!--            @FXML-->
+<!--            private boolean areOmnivoresPresent;-->
+            <TextField fx:id="initialAnimalCount" promptText="initialAnimalCount"/>
+
+            <TextField fx:id="initialJunglePlantCount" promptText="initialJunglePlantCount"/>
+
+            <TextField fx:id="initialSavannaPlantCount" promptText="initialSavannaPlantCount"/>
+
+            <TextField fx:id="dailyNewPlantsCount" promptText="dailyNewPlantsCount"/>
+
+            <TextField fx:id="energyToReproduce" promptText="energyToReproduce"/>
+
+            <TextField fx:id="initialAnimalEnergy" promptText="initialAnimalEnergy"/>
+
+            <TextField fx:id="initialGenesLength" promptText="initialGenesLength"/>
+
+            <TextField fx:id="dailyEnergyCost" promptText="dailyEnergyCost"/>
+
+            <TextField fx:id="plantEnergyValue" promptText="plantEnergyValue"/>
+
+            <TextField fx:id="reproductionEnergyFactor" promptText="reproductionEnergyFactor"/>
+
+            <TextField fx:id="minMutationCount" promptText="minMutationCount"/>
+
+            <TextField fx:id="maxMutationCount" promptText="maxMutationCount"/>
+
+        </VBox>
+
+    </center>
+
+    <bottom>
+        <HBox>
+            <Button fx:id="startButton" text="Start simulation" />
+            <Button fx:id="startDefaultButton" text="Start default simulation" />
+        </HBox>
+
+    </bottom>
+
+
+</BorderPane>
