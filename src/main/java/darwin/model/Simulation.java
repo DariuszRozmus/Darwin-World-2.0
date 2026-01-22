@@ -7,22 +7,21 @@ import darwin.model.map.*;
 import darwin.presenter.SimulationListener;
 import darwin.presenter.SimulationPresenter;
 import javafx.application.Platform;
-import javafx.scene.chart.XYChart;
 
 import java.util.Map;
 
 public class Simulation implements Runnable{
 
     private WorldMap worldMap;
-    private RandomPositionGenerator randomPositionGenerator;
     private RandomAnimalGenerator randomAnimalGenerator = new RandomAnimalGenerator();
     private AnimalWaiter animalWaiter = new AnimalWaiter();
+    private Butcher butcher = new Butcher();
 
     private final int dayDecreaseEnergy;
     private final int plantEnergy;
     private final int newPlantsPerDay;
 
-    private int startAnimals;
+    private int startHerbivores;
     private int startGeneLengthAnimals;
     private int startEnergyAnimal;
     private int day = 0;
@@ -31,13 +30,15 @@ public class Simulation implements Runnable{
     private final SimulationPresenter simulationPresenter;
     private volatile boolean isRunning = false;
     private final SimulationListener listener;
+    private final PreliminaryData data;
 
     public Simulation(WorldMap worldMap, SimulationPresenter simulationPresenter,
                       PreliminaryData data, SimulationListener listener){
+        this.data = data;
         this.listener = listener;
         this.simulationPresenter = simulationPresenter;
         this.worldMap = worldMap;
-        this.startAnimals = data.initialAnimalCount();
+        this.startHerbivores = data.initialAnimalCount();
         this.startEnergyAnimal = data.initialAnimalEnergy();
         this.startGeneLengthAnimals = data.initialGenesLength();
         this.dayDecreaseEnergy = data.dailyEnergyCost();
@@ -79,6 +80,9 @@ public class Simulation implements Runnable{
             removeDeathAnimals();
             moveLiveAnimals();
             eatPlants();
+            if(data.areCarnivoresPresent()) {
+                letHuntersHunt();
+            }
             reproduceAnimals();
             decreaseAnimalEnergy();
             plantNewPlants();
@@ -147,6 +151,16 @@ public class Simulation implements Runnable{
                 .map(position -> worldMap.getAnimalsMap().get(position))
                 .filter(animalList -> animalList.size() >= 2)
                 .forEach(animalList -> breeder.breedBest(animalList, day, worldMap));
+    }
+
+    private void letHuntersHunt(){
+        worldMap.getAnimalsMap().keySet().stream()
+                .map(position -> worldMap.getAnimalsMap().get(position))
+                .filter(animalList -> animalList.stream()
+                        .anyMatch(animal -> animal.getSpecie() == Species.CARNIVORE) &&
+                        animalList.stream()
+                                .anyMatch(animal -> animal.getSpecie() == Species.HERBIVORE))
+                .forEach(animalList -> butcher.killAndFeed(animalList));
     }
     private void decreaseAnimalEnergy(){
         worldMap.getAnimalLiveList()

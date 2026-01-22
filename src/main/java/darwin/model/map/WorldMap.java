@@ -150,9 +150,7 @@ public class WorldMap implements MoveValidator {
         var animals = animalsMap.get(position);
         if (animals == null || animals.isEmpty()) return;
 
-        waiter.feedBest(plant.getEnergy(), animals);
-
-        plants.remove(position);
+        waiter.feedBest(plant, animals, this);
     }
 
     private void removeFromPosition(Animal animal, Vector2d position){

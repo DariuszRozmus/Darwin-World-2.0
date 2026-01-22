@@ -35,7 +35,11 @@ public class Breeder {
         Animal animal1 = animalList.removeLast();
         Animal animal2 = animalList.removeLast();
 
-        if (animal1.getEnergy() < minEnergyToReproduce || animal2.getEnergy() < minEnergyToReproduce){
+        if (animal1.getEnergy() < minEnergyToReproduce ||
+                animal2.getEnergy() < minEnergyToReproduce ||
+                animal1.getSpecie() != animal2.getSpecie() ||
+                animal1.getEnergy() / energyDivisor <= 0 ||
+                animal2.getEnergy() / energyDivisor <= 0) {
             return;
         }
         int energy1 = animal1.getEnergy() / energyDivisor;
