@@ -118,7 +118,7 @@ public class WorldMap implements MoveValidator {
         animalsDiedList.add(animal);
     }
 
-    private boolean isInBounds(Vector2d position){
+    public boolean isInBounds(Vector2d position){
         return mapUpCorner.follows(position) && DOWN_CORNER.precedes(position);
     }
 
@@ -158,9 +158,9 @@ public class WorldMap implements MoveValidator {
         animalsAtPosition.remove(animal);
     }
 
-    public void move(Animal animal){
+    public void move(Animal animal, PreliminaryData data){
         Vector2d oldPosition = animal.getPosition();
-        animal.move(this);
+        animal.move(this, data);
         Vector2d newPosition = animal.getPosition();
         if (newPosition != oldPosition){
             this.placeAnimal(animal);

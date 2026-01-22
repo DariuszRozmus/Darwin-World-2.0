@@ -51,6 +51,10 @@ public class Vector2d {
         return new Vector2d(-x, -y);
     }
 
+    public int distance(Vector2d other) {
+        return (int) Math.sqrt(Math.pow((other.getX() - this.getX()), 2) + Math.pow((other.getY() - this.getY()), 2));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,6 @@
 package darwin.model.elements;
 
+import darwin.config.PreliminaryData;
 import darwin.model.Vector2d;
 import darwin.model.map.MapDirection;
 import darwin.model.map.MoveValidator;
@@ -26,6 +27,8 @@ public class Animal implements WorldElement{
     private int deathDay = -1;
     private int childrenCount = 0;
     private boolean hasMoved = false;
+    private boolean fomo = false;
+    private Vector2d fomoPosition;
     private final Species specie;
 
     private final UUID uuid = UUID.randomUUID();
@@ -42,6 +45,7 @@ public class Animal implements WorldElement{
         this.position = position;
         this.genes = genes;
         this.worldMap = worldMap;
+        this.fomoPosition = position;
     }
 
     public int getChildrenCount(){
@@ -84,6 +88,10 @@ public class Animal implements WorldElement{
         return hasMoved;
     }
 
+    public boolean isFomo(){
+        return fomo;
+    }
+
     public void decreaseEnergy(int energy){
         this.energy -= energy;
         live = this.energy > 0;
@@ -102,6 +110,14 @@ public class Animal implements WorldElement{
         this.deathDay = deathDay;
     }
 
+    public void setFomo(boolean bool){
+        this.fomo = bool;
+    }
+
+    public void setFomoPosition(Vector2d position){
+        this.fomoPosition = position;
+    }
+
     public int getDeathDay(){
         return deathDay;
     }
@@ -110,19 +126,35 @@ public class Animal implements WorldElement{
         return this.position.equals(position);
     }
 
-    public void move(MoveValidator moveValidator){
+    public void move(MoveValidator moveValidator, PreliminaryData data){
         if(genes.isEmpty()) return;
-
-        Gene gene = genes.poll();
-        genes.offer(gene);
-        this.direction = direction.nextSteps(gene.getRotation());
-        Vector2d newPosition = position.add(direction.toUnitVector());
-        if(moveValidator.canMoveTo(newPosition)){
-            this.position = newPosition;
-            this.hasMoved = true;
+        if(data.isFOMO() && fomo){
+            Vector2d directionToFomo = fomoPosition.subtract(position);
+            MapDirection desiredDirection = MapDirection.fromVector(directionToFomo);
+            this.direction = desiredDirection;
+            Vector2d newPosition = position.add(direction.toUnitVector());
+            if (moveValidator.canMoveTo(newPosition)) {
+                this.position = newPosition;
+                this.hasMoved = true;
+            } else {
+                this.direction = direction.oppositeDirection();
+                this.hasMoved = false;
+            }
+            if (direction == desiredDirection){
+                fomo = false;
+            }
         } else {
-            this.direction = direction.oppositeDirection();
-            this.hasMoved = false;
+            Gene gene = genes.poll();
+            genes.offer(gene);
+            this.direction = direction.nextSteps(gene.getRotation());
+            Vector2d newPosition = position.add(direction.toUnitVector());
+            if (moveValidator.canMoveTo(newPosition)) {
+                this.position = newPosition;
+                this.hasMoved = true;
+            } else {
+                this.direction = direction.oppositeDirection();
+                this.hasMoved = false;
+            }
         }
     }
 
@@ -148,6 +180,9 @@ public class Animal implements WorldElement{
     }
 
     public Color getColor() {
+        if (fomo){
+            return Color.ORANGE;
+        }
         return switch (specie) {
             case HERBIVORE -> Color.BLUE;
             case CARNIVORE -> Color.RED;

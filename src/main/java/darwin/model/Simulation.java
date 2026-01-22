@@ -16,6 +16,7 @@ public class Simulation implements Runnable{
     private RandomAnimalGenerator randomAnimalGenerator = new RandomAnimalGenerator();
     private AnimalWaiter animalWaiter = new AnimalWaiter();
     private Butcher butcher = new Butcher();
+    private FomoTherapist fomoTherapist = new FomoTherapist();
 
     private final int dayDecreaseEnergy;
     private final int plantEnergy;
@@ -102,6 +103,9 @@ public class Simulation implements Runnable{
             if(data.areCarnivoresPresent()) {
                 letHuntersHunt();
             }
+            if(data.isFOMO()) {
+                feelFomo();
+            }
             reproduceAnimals();
             decreaseAnimalEnergy();
             plantNewPlants();
@@ -147,7 +151,7 @@ public class Simulation implements Runnable{
 
     private void moveLiveAnimals(){
         worldMap.getAnimalLiveList()
-                .forEach(animal -> worldMap.move(animal));
+                .forEach(animal -> worldMap.move(animal, data));
     }
 
     private void eatPlants() {
@@ -181,6 +185,13 @@ public class Simulation implements Runnable{
                                 .anyMatch(animal -> animal.getSpecie() == Species.HERBIVORE))
                 .forEach(animalList -> butcher.killAndFeed(animalList));
     }
+
+    private void feelFomo(){
+        fomoTherapist.findFomoGroupsAndBind(worldMap,
+                data.fomoGroupSize(),
+                data.fomoRay());
+    }
+
     private void decreaseAnimalEnergy(){
         worldMap.getAnimalLiveList()
                 .forEach(animal -> animal.decreaseEnergy(dayDecreaseEnergy));

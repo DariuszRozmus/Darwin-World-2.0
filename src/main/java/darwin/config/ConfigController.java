@@ -13,6 +13,8 @@ import org.controlsfx.control.ToggleSwitch;
 
 import java.util.function.Consumer;
 
+import static java.lang.Math.max;
+
 public class ConfigController {
 
     private Consumer<PreliminaryData> simulationStarter;
@@ -37,6 +39,12 @@ public class ConfigController {
 
     @FXML
     private ToggleSwitch isFOMO;
+
+    @FXML
+    private TextField fomoGroupSize;
+
+    @FXML
+    private Slider fomoRay;
 
     @FXML
     private ToggleSwitch areCarnivoresPresent;
@@ -148,13 +156,23 @@ public class ConfigController {
             }
         });
 
+        isFOMO.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                fomoGroupSize.setDisable(false);
+                fomoRay.setDisable(false);
+            } else {
+                fomoGroupSize.setDisable(true);
+                fomoRay.setDisable(true);
+            }
+        });
+
     }
 
     @FXML
     private void onDefaultClicked() {
         PreliminaryData data = new PreliminaryData(6,6,
                 new Vector2d(2,2),new Vector2d(4,4),
-                false, 0,
+                false, 0, 0,
                 false, 0,
                 false, 5,
                 5,5,
@@ -179,9 +197,10 @@ public class ConfigController {
                 new Vector2d((int) jungleUpRightCornerX.getValue(),
                         (int) jungleUpRightCornerY.getValue()),
                 isFOMO.isSelected(),
-                0, //circleRay not used currently
+                intOrZero(fomoGroupSize),
+                (int) fomoRay.getValue(),
                 areCarnivoresPresent.isSelected(),
-                Integer.parseInt(initialCarnivoresCount.getText()),
+                intOrZero(initialCarnivoresCount),
                 false, //Boolean.getBoolean(areOmnivoresPresent.getText()),
                 Integer.parseInt(initialAnimalCount.getText()),
                 Integer.parseInt(initialJunglePlantCount.getText()),
@@ -197,4 +216,17 @@ public class ConfigController {
                 Integer.parseInt(maxMutationCount.getText())
         );
     }
+
+    private int intOrZero(TextField field) {
+        try {
+            String text = field.getText();
+            if (text == null || text.isBlank()) {
+                return 0;
+            }
+            return Math.max(Integer.parseInt(text), 0);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
 }

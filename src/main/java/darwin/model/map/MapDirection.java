@@ -47,6 +47,25 @@ public enum MapDirection {
         return values()[nexOrdinal];
     }
 
+    public static MapDirection fromVector(Vector2d vector) {
+        int x = vector.getX();
+        int y = vector.getY();
+
+        if (x == 0 && y == 0) return MapDirection.NORTH;
+        if (x == 0 && y > 0) return MapDirection.NORTH;
+        if (x == 0 && y < 0) return MapDirection.SOUTH;
+
+        if (x > 0 && y > 0) return MapDirection.NORTHEAST;
+        if (x > 0 && y < 0) return MapDirection.SOUTHEAST;
+        if (x > 0 && y == 0) return MapDirection.EAST;
+
+        if (x < 0 && y > 0) return MapDirection.NORTHWEST;
+        if (x < 0 && y < 0) return MapDirection.SOUTHWEST;
+        if (x < 0 && y == 0) return MapDirection.WEST;
+
+        throw new IllegalArgumentException("Zero vector has no direction");
+    }
+
     @Override
     public String toString() {
         return switch (this) {

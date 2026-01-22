@@ -8,7 +8,7 @@
 <?import org.controlsfx.control.ToggleSwitch?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            prefHeight="700.0" prefWidth="400.0"
+            prefHeight="700.0" prefWidth="500.0"
             styleClass="background"
             fx:controller="darwin.config.ConfigController">
     <center>
@@ -40,9 +40,14 @@
                 <Label>Jungle down left corner height</Label>
                 <Slider fx:id="jungleDownLeftCornerY" min="0" max="50" value="2" blockIncrement="1"
                         showTickLabels="true" showTickMarks="true"/>
-
-                <ToggleSwitch fx:id="isFOMO" text="FOMO"/>
-                <HBox>
+                <HBox spacing="10" >
+                    <ToggleSwitch fx:id="isFOMO" text="FOMO"/>
+                    <TextField fx:id="fomoGroupSize" promptText="Fomo Group Size" disable="true"/>
+                </HBox>
+                <Label>FOMO Ray</Label>
+                <Slider fx:id="fomoRay" min="0" max="50" value="2" blockIncrement="1"
+                        showTickLabels="true" showTickMarks="true" disable="true"/>
+                <HBox spacing="10">
                     <ToggleSwitch fx:id="areCarnivoresPresent" text="Carnivores Present"/>
                     <TextField fx:id="initialCarnivoresCount" promptText="Initial Carnivores Count" disable="true"/>
                 </HBox>
