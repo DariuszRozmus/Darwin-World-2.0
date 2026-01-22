@@ -4,8 +4,10 @@ import darwin.config.PreliminaryData;
 import darwin.model.elements.Animal;
 import darwin.model.elements.Species;
 import darwin.model.map.*;
+import darwin.presenter.SimulationListener;
 import darwin.presenter.SimulationPresenter;
 import javafx.application.Platform;
+import javafx.scene.chart.XYChart;
 
 import java.util.Map;
 
@@ -27,10 +29,12 @@ public class Simulation implements Runnable{
     private final Planter planter = new Planter();
     private final Breeder breeder;
     private final SimulationPresenter simulationPresenter;
-
     private volatile boolean isRunning = false;
+    private final SimulationListener listener;
 
-    public Simulation(WorldMap worldMap, SimulationPresenter simulationPresenter, PreliminaryData data){
+    public Simulation(WorldMap worldMap, SimulationPresenter simulationPresenter,
+                      PreliminaryData data, SimulationListener listener){
+        this.listener = listener;
         this.simulationPresenter = simulationPresenter;
         this.worldMap = worldMap;
         this.startAnimals = data.initialAnimalCount();
@@ -73,63 +77,20 @@ public class Simulation implements Runnable{
             }
 
             removeDeathAnimals();
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             moveLiveAnimals();
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             eatPlants();
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             reproduceAnimals();
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             decreaseAnimalEnergy();
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             plantNewPlants();
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             System.out.println(worldMap);
             worldMap.getAnimalLiveList().forEach(animal -> System.out.println(animal.getPosition() + " Energy: " + animal.getEnergy()));
-
-            Platform.runLater(() ->
-                    simulationPresenter.drawMap(worldMap));
 
             System.out.println(worldMap.getAnimalLiveList());
             System.out.println(worldMap.getAnimalsDiedList());
             System.out.println("Day" + day);
             nextDay();
+            Platform.runLater(() ->
+                    listener.onDayUpdate(day, worldMap));
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
