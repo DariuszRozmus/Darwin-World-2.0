@@ -4,6 +4,10 @@ import darwin.model.Vector2d;
 import darwin.model.map.MapDirection;
 import darwin.model.map.MoveValidator;
 import darwin.model.map.WorldMap;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+
 
 import java.util.Queue;
 import java.util.UUID;
@@ -130,18 +134,28 @@ public class Animal implements WorldElement{
         return 0;
     }
 
-    public String toString(){
-        switch (direction){
-            case NORTH ->  {return "↑";}
-            case EAST ->   {return "→";}
-            case SOUTH ->  {return "↓";}
-            case WEST ->   {return "←";}
-            case NORTHEAST -> {return "↗";}
-            case NORTHWEST -> {return "↖";}
-            case SOUTHEAST -> {return "↘";}
-            case SOUTHWEST -> {return "↙";}
-            default -> {return "?";}
-        }
+    public String getSymbol() {
+        return switch (direction) {
+            case NORTH -> "↑";
+            case EAST -> "→";
+            case SOUTH -> "↓";
+            case WEST -> "←";
+            case NORTHEAST -> "↗";
+            case NORTHWEST -> "↖";
+            case SOUTHEAST -> "↘";
+            case SOUTHWEST -> "↙";
+        };
     }
 
+    public Color getColor() {
+        return switch (specie) {
+            case HERBIVORE -> Color.BLUE;
+            case CARNIVORE -> Color.RED;
+            case OMNIVORE -> Color.PURPLE;
+        };
+    }
+
+    public String toString() {
+        return getSymbol();
+    }
 }
