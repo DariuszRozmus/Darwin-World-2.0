@@ -1,6 +1,5 @@
 package darwin.view;
 
-import com.pixelduke.control.skin.FXSkins;
 import darwin.config.ConfigController;
 import darwin.config.PreliminaryData;
 import darwin.model.Simulation;
@@ -12,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 
 import java.io.IOException;
 
@@ -27,8 +28,9 @@ public class SimulationApp extends Application {
         ConfigController controller = configLoader.getController();
         controller.setSimulationStarter(this::startSimulation);
 
-        Scene scene = new Scene(root); // <-- tworzysz scenę
-        scene.getStylesheets().add(FXSkins.getStylesheetURL()); // <-- dodajesz FXSkins do sceny
+        JMetro jMetro = new JMetro(Style.LIGHT);
+        var scene = new Scene(root);
+        jMetro.setScene(scene);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Konfiguracja symulacji");
         primaryStage.show();
@@ -44,8 +46,13 @@ public class SimulationApp extends Application {
             SimulationPresenter presenter = loader.getController();
             presenter.init(data);
 
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
+
+            JMetro jMetro = new JMetro(Style.LIGHT);
+            jMetro.setScene(scene);
+
             stage.setTitle("Symulacja");
             stage.show();
 
