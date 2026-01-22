@@ -1,69 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.ToggleSwitch?>
 
+<?import org.controlsfx.control.ToggleSwitch?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            prefHeight="400.0" prefWidth="600.0"
+            prefHeight="700.0" prefWidth="400.0"
+            styleClass="background"
             fx:controller="darwin.config.ConfigController">
     <center>
-        <VBox>
-            <TextField fx:id="worldWidth" promptText="worldWidth"/>
+        <ScrollPane fitToWidth="true" fitToHeight="true" pannable="true">
+            <VBox styleClass="background" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
 
-            <TextField fx:id="worldHeight" promptText="worldHeight"/>
+                <Label>World Width</Label>
+                <Slider fx:id="worldWidth" min="0" max="50" value="10" blockIncrement="1"
+                        showTickLabels="true" showTickMarks="true"/>
 
-            <TextField fx:id="jungleDownLeftCornerX" promptText="jungleDownLeftCornerX"/>
+                <Label>World Height</Label>
+                <Slider fx:id="worldHeight" min="0" max="50" value="10" blockIncrement="1" showTickLabels="true" showTickMarks="true"/>
 
-            <TextField fx:id="jungleDownLeftCornerY" promptText="jungleDownLeftCornerY"/>
+                <Label>Jungle up right corner width</Label>
+                <Slider fx:id="jungleUpRightCornerX" min="0" max="50" value="5" blockIncrement="1"
+                        showTickLabels="true" showTickMarks="true"/>
 
-            <TextField fx:id="jungleUpRightCornerX" promptText="jungleUpRightCornerX"/>
+                <Label>Jungle up right corner height</Label>
+                <Slider fx:id="jungleUpRightCornerY" min="0" max="50" value="5" blockIncrement="1"
+                        showTickLabels="true" showTickMarks="true"/>
 
-            <TextField fx:id="jungleUpRightCornerY" promptText="jungleUpRightCornerY"/>
+                <Label>Jungle down left corner width</Label>
+                <Slider fx:id="jungleDownLeftCornerX" min="0" max="50" value="2" blockIncrement="1"
+                        showTickLabels="true" showTickMarks="true"/>
 
-            <TextField fx:id="isFOMO" promptText="isFOMO"/>
+                <Label>Jungle down left corner height</Label>
+                <Slider fx:id="jungleDownLeftCornerY" min="0" max="50" value="2" blockIncrement="1"
+                        showTickLabels="true" showTickMarks="true"/>
 
-            <TextField fx:id="areCarnivoresPresent" promptText="areCarnivoresPresent"/>
-<!--            @FXML-->
-<!--            private boolean areOmnivoresPresent;-->
-            <TextField fx:id="initialAnimalCount" promptText="initialAnimalCount"/>
-
-            <TextField fx:id="initialJunglePlantCount" promptText="initialJunglePlantCount"/>
-
-            <TextField fx:id="initialSavannaPlantCount" promptText="initialSavannaPlantCount"/>
-
-            <TextField fx:id="dailyNewPlantsCount" promptText="dailyNewPlantsCount"/>
-
-            <TextField fx:id="energyToReproduce" promptText="energyToReproduce"/>
-
-            <TextField fx:id="initialAnimalEnergy" promptText="initialAnimalEnergy"/>
-
-            <TextField fx:id="initialGenesLength" promptText="initialGenesLength"/>
-
-            <TextField fx:id="dailyEnergyCost" promptText="dailyEnergyCost"/>
-
-            <TextField fx:id="plantEnergyValue" promptText="plantEnergyValue"/>
-
-            <TextField fx:id="reproductionEnergyFactor" promptText="reproductionEnergyFactor"/>
-
-            <TextField fx:id="minMutationCount" promptText="minMutationCount"/>
-
-            <TextField fx:id="maxMutationCount" promptText="maxMutationCount"/>
-
-        </VBox>
-
+                <ToggleSwitch fx:id="isFOMO" text="FOMO"/>
+                <HBox>
+                    <ToggleSwitch fx:id="areCarnivoresPresent" text="Carnivores Present"/>
+                    <TextField fx:id="initialCarnivoresCount" promptText="Initial Carnivores Count" disable="true"/>
+                </HBox>
+                <TextField fx:id="initialAnimalCount" promptText="Initial Herbivores Count"/>
+                <TextField fx:id="initialJunglePlantCount" promptText="Initial Jungle Plant Count"/>
+                <TextField fx:id="initialSavannaPlantCount" promptText="Initial Savanna Plant Count"/>
+                <TextField fx:id="dailyNewPlantsCount" promptText="Daily New Plants Count"/>
+                <TextField fx:id="energyToReproduce" promptText="Energy To Reproduce"/>
+                <TextField fx:id="initialAnimalEnergy" promptText="Initial Animal Energy"/>
+                <TextField fx:id="initialGenesLength" promptText="Initial Genes Length"/>
+                <TextField fx:id="dailyEnergyCost" promptText="Daily Energy Cost"/>
+                <TextField fx:id="plantEnergyValue" promptText="Plant Energy Value"/>
+                <TextField fx:id="reproductionEnergyFactor" promptText="Reproduction Energy Factor"/>
+                <TextField fx:id="minMutationCount" promptText="Min Mutation Count"/>
+                <TextField fx:id="maxMutationCount" promptText="Max Mutation Count"/>
+            </VBox>
+        </ScrollPane>
     </center>
 
     <bottom>
-        <HBox>
-            <Button fx:id="startButton" text="Start simulation" />
-            <Button fx:id="startDefaultButton" text="Start default simulation" />
+        <HBox styleClass="background" spacing="10" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </padding>
+            <Button fx:id="startButton" text="Start Simulation"/>
+            <Button fx:id="startDefaultButton" text="Start Default Simulation"/>
         </HBox>
-
     </bottom>
-
-
 </BorderPane>

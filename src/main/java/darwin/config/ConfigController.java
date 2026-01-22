@@ -1,9 +1,15 @@
 package darwin.config;
 
 import darwin.model.Vector2d;
+import impl.jfxtras.styles.jmetro.ToggleSwitchSkin;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
+import javafx.scene.AccessibleAttribute;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import org.controlsfx.control.ToggleSwitch;
 
 import java.util.function.Consumer;
 
@@ -12,27 +18,31 @@ public class ConfigController {
     private Consumer<PreliminaryData> simulationStarter;
 
     @FXML
-    private TextField worldWidth;
+    private Slider worldWidth;
 
     @FXML
-    private TextField worldHeight;
+    private Slider worldHeight;
 
     @FXML
-    private TextField jungleDownLeftCornerX;
+    private Slider jungleDownLeftCornerX;
 
     @FXML
-    private TextField jungleDownLeftCornerY;
+    private Slider jungleDownLeftCornerY;
 
     @FXML
-    private TextField jungleUpRightCornerX;
+    private Slider jungleUpRightCornerX;
 
     @FXML
-    private TextField jungleUpRightCornerY;
+    private Slider jungleUpRightCornerY;
 
     @FXML
-    private TextField isFOMO;
+    private ToggleSwitch isFOMO;
+
     @FXML
-    private TextField areCarnivoresPresent;
+    private ToggleSwitch areCarnivoresPresent;
+
+    @FXML
+    private TextField initialCarnivoresCount;
 
     @FXML
     private TextField areOmnivoresPresent;
@@ -72,7 +82,6 @@ public class ConfigController {
     @FXML
     private TextField maxMutationCount;
 
-
     @FXML
     private Button startButton;
 
@@ -87,14 +96,67 @@ public class ConfigController {
     void initialize() {
         startButton.setOnAction(event -> onStartClicked());
         startDefaultButton.setOnAction(event -> onDefaultClicked());
+
+        worldWidth.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int width = newVal.intValue();
+            jungleUpRightCornerX.setMax(width);
+
+            if ((int) jungleUpRightCornerX.getValue() > width) {
+                jungleUpRightCornerX.setValue(width);
+            }
+        });
+        jungleUpRightCornerX.setMax((int) jungleUpRightCornerX.getValue());
+
+        worldHeight.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int width = newVal.intValue();
+            jungleUpRightCornerY.setMax(width);
+
+            if ((int) jungleUpRightCornerY.getValue() > width) {
+                jungleUpRightCornerY.setValue(width);
+            }
+        });
+        jungleUpRightCornerY.setMax((int) jungleUpRightCornerY.getValue());
+
+        jungleUpRightCornerX.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int width = newVal.intValue();
+            jungleDownLeftCornerX.setMax(width);
+
+            if ((int) jungleDownLeftCornerX.getValue() > width) {
+                jungleDownLeftCornerX.setValue(width);
+            }
+        });
+        jungleDownLeftCornerX.setMax((int) jungleDownLeftCornerX.getValue());
+
+        jungleUpRightCornerY.valueProperty().addListener((obs, oldVal, newVal) -> {
+            int width = newVal.intValue();
+            jungleDownLeftCornerY.setMax(width);
+
+            if ((int) jungleDownLeftCornerY.getValue() > width) {
+                jungleDownLeftCornerY.setValue(width);
+            }
+        });
+        jungleDownLeftCornerY.setMax((int) jungleDownLeftCornerY.getValue());
+
+//        fomoProperty.bind(isFOMO.selectedProperty());
+//        carnivoresProperty.bind(areCarnivoresPresent.selectedProperty());
+
+        areCarnivoresPresent.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (isNowSelected) {
+                initialCarnivoresCount.setDisable(false);
+            } else {
+                initialCarnivoresCount.setDisable(true);
+            }
+        });
+
     }
 
     @FXML
     private void onDefaultClicked() {
         PreliminaryData data = new PreliminaryData(6,6,
                 new Vector2d(2,2),new Vector2d(4,4),
-                false, false, false,
-                5,
+                false, 0,
+                false, 0,
+                false, 5,
                 5,5,
                 3,10,
                 30,10, 2,20,
@@ -110,14 +172,16 @@ public class ConfigController {
 
     private PreliminaryData collectDataFromForm() {
         return new PreliminaryData(
-                Integer.parseInt(worldWidth.getText()),
-                Integer.parseInt(worldHeight.getText()),
-                new Vector2d(Integer.parseInt(jungleDownLeftCornerX.getText()),
-                        Integer.parseInt(jungleDownLeftCornerY.getText())),
-                new Vector2d(Integer.parseInt(jungleUpRightCornerX.getText()),
-                        Integer.parseInt(jungleUpRightCornerY.getText())),
-                Boolean.getBoolean(isFOMO.getText()),
-                Boolean.getBoolean(areCarnivoresPresent.getText()),
+                (int) worldWidth.getValue(),
+                (int) worldHeight.getValue(),
+                new Vector2d((int) jungleDownLeftCornerX.getValue(),
+                        (int) jungleDownLeftCornerY.getValue()),
+                new Vector2d((int) jungleUpRightCornerX.getValue(),
+                        (int) jungleUpRightCornerY.getValue()),
+                isFOMO.isSelected(),
+                0, //circleRay not used currently
+                areCarnivoresPresent.isSelected(),
+                Integer.parseInt(initialCarnivoresCount.getText()),
                 false, //Boolean.getBoolean(areOmnivoresPresent.getText()),
                 Integer.parseInt(initialAnimalCount.getText()),
                 Integer.parseInt(initialJunglePlantCount.getText()),
