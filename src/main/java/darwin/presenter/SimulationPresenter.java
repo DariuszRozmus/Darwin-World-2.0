@@ -12,6 +12,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SimulationPresenter {
+public class SimulationPresenter implements SimulationListener {
 
     @FXML
     private Canvas mapGrid;
@@ -33,9 +35,20 @@ public class SimulationPresenter {
     @FXML
     private Button stopButton;
 
+    @FXML
+    private LineChart<Number, Number> populationChart;
+    private XYChart.Series<Number, Number> animalsSeries;
+    private XYChart.Series<Number, Number> plantsSeries;
+    private XYChart.Series<Number, Number> freeFieldsSeries;
+    private XYChart.Series<Number, Number> avridgeEnergySeries;
+    private XYChart.Series<Number, Number> avridgeLiveLengthSeries;
+    private XYChart.Series<Number, Number> avridgeChildrenSeries;
+
+
     public void init(PreliminaryData data) {
+        setupChart();
         WorldMap worldMap = new WorldMap(data);
-        Simulation simulation = new Simulation(worldMap, this, data);
+        Simulation simulation = new Simulation(worldMap, this, data,this);
 
         Thread simThread = new Thread(simulation);
         simThread.setDaemon(true);
@@ -55,8 +68,8 @@ public class SimulationPresenter {
     }
 
     public void drawMap(WorldMap worldMap){
-        mapGrid.setHeight(500);
-        mapGrid.setWidth(500);
+        mapGrid.setHeight(25 * worldMap.getMapUpCorner().getX());
+        mapGrid.setWidth(25 * worldMap.getMapUpCorner().getY());
         GraphicsContext graphics = mapGrid.getGraphicsContext2D();
         graphics.setFill(Color.GOLD);
         graphics.setStroke(Color.BLACK);
@@ -76,7 +89,7 @@ public class SimulationPresenter {
         for (WorldElement worldElement : worldElements){
             graphics.strokeText(worldElement.toString(),
                     worldElement.getPosition().getX() * 20 + 15,
-                    mapGrid.getHeight() - worldElement.getPosition().getY() * 20 - 10,
+                    mapGrid.getHeight() - worldElement.getPosition().getY() * 20 - 5,
                     10);
         }
 //        graphics.setTextAlign(TextAlignment.CENTER);
@@ -84,5 +97,52 @@ public class SimulationPresenter {
 //        graphics.setFont(new Font("Arial", size));
 //        graphics.setFill(black);
     }
+    private void setupChart() {
+        animalsSeries = new XYChart.Series<>();
+        animalsSeries.setName("Zwierzęta");
 
+        plantsSeries = new XYChart.Series<>();
+        plantsSeries.setName("Rośliny");
+
+        freeFieldsSeries = new XYChart.Series<>();
+        freeFieldsSeries.setName("Wolne pola");
+
+        avridgeEnergySeries = new XYChart.Series<>();
+        avridgeEnergySeries.setName("Średnia energia");
+
+        avridgeLiveLengthSeries = new XYChart.Series<>();
+        avridgeLiveLengthSeries.setName("Średnia długość życia");
+
+        avridgeChildrenSeries = new XYChart.Series<>();
+        avridgeChildrenSeries.setName("Średnia liczba dzieci");
+
+        populationChart.getData().addAll(animalsSeries, plantsSeries, freeFieldsSeries,
+                avridgeEnergySeries, avridgeLiveLengthSeries, avridgeChildrenSeries);
+        populationChart.setAnimated(false);
+    }
+
+    @Override
+    public void onDayUpdate(int day, WorldMap worldMap) {
+        Platform.runLater(() -> {
+            animalsSeries.getData().add(
+                    new XYChart.Data<>(day, worldMap.getAnimalLiveList().size())
+            );
+            plantsSeries.getData().add(
+                    new XYChart.Data<>(day, worldMap.getPlants().size())
+            );
+            freeFieldsSeries.getData().add(
+                    new XYChart.Data<>(day, worldMap.getEmptyFieldsCount())
+            );
+            avridgeEnergySeries.getData().add(
+                    new XYChart.Data<>(day, worldMap.getAverageEnergyOfLivingAnimals())
+            );
+            avridgeChildrenSeries.getData().add(
+                    new XYChart.Data<>(day, worldMap.getAverageChildrenCountOfLivingAnimals())
+            );
+            avridgeLiveLengthSeries.getData().add(
+                    new XYChart.Data<>(day, worldMap.getAverageLifeLengthOfDeadAnimals())
+            );
+            drawMap(worldMap);
+        });
+    }
 }

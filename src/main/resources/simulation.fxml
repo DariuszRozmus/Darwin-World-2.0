@@ -8,6 +8,8 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.canvas.GraphicsContext?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.LineChart?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             minHeight="650.0" minWidth="850.0"
@@ -17,10 +19,21 @@
     </center>
 
     <bottom>
-        <HBox>
-            <Button fx:id="stopButton" text="Stop" />
-            <Button fx:id="startButton" text="Run" />
-        </HBox>
+        <VBox>
 
+            <LineChart fx:id="populationChart"
+                       prefWidth="400">
+                <xAxis>
+                    <NumberAxis label="xAxis"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="yAxis"/>
+                </yAxis>
+            </LineChart>
+            <HBox>
+                <Button fx:id="stopButton" text="Stop" />
+                <Button fx:id="startButton" text="Run" />
+            </HBox>
+        </VBox>
     </bottom>
 </BorderPane>
