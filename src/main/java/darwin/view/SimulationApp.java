@@ -1,5 +1,6 @@
 package darwin.view;
 
+import com.pixelduke.control.skin.FXSkins;
 import darwin.config.ConfigController;
 import darwin.config.PreliminaryData;
 import darwin.model.Simulation;
@@ -26,7 +27,9 @@ public class SimulationApp extends Application {
         ConfigController controller = configLoader.getController();
         controller.setSimulationStarter(this::startSimulation);
 
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root); // <-- tworzysz scenę
+        scene.getStylesheets().add(FXSkins.getStylesheetURL()); // <-- dodajesz FXSkins do sceny
+        primaryStage.setScene(scene);
         primaryStage.setTitle("Konfiguracja symulacji");
         primaryStage.show();
     }

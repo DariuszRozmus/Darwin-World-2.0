@@ -18,12 +18,16 @@ javafx {
 
 application {
     getMainClass().set('darwin')
+    applicationDefaultJvmArgs =  [
+            "--add-opens=javafx.controls/javafx.scene.control.skin=com.pixelduke.fxskins"
+    ]
 }
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'com.pixelduke:FXSkins:1.0.0'
 }
 
 test {
