@@ -68,34 +68,37 @@ public class SimulationPresenter implements SimulationListener {
     }
 
     public void drawMap(WorldMap worldMap){
-        mapGrid.setHeight(25 * worldMap.getMapUpCorner().getX());
-        mapGrid.setWidth(25 * worldMap.getMapUpCorner().getY());
+        int worldHeight = worldMap.getMapUpCorner().getY() + 1;
+        int worldWidth = worldMap.getMapUpCorner().getX() + 1;
+
+        mapGrid.setHeight(22 * worldHeight + 2);
+        mapGrid.setWidth(22 * worldWidth + 2);
         GraphicsContext graphics = mapGrid.getGraphicsContext2D();
-        graphics.setFill(Color.GOLD);
+        graphics.setFill(Color.WHITE);
         graphics.setStroke(Color.BLACK);
         graphics.setLineWidth(2.0);
         graphics.fillRect(0, 0, mapGrid.getWidth(), mapGrid.getHeight());
 //        Boundary boundary = worldMap.getCurrentBoundary();
-        for (int x = 0; x < mapGrid.getWidth() + 1; x += 20) {
-            graphics.strokeLine(x + 10, 0, x + 10, mapGrid.getHeight());  // BORDER_OFFSET = BORDER_WIDTH / 2
+        for (int x = 0; x < worldHeight*22 + 1; x += 22) {
+            graphics.strokeLine(x+1, 0, x+1, mapGrid.getHeight());
         }
-        for (int y = 0; y < mapGrid.getHeight() + 1; y += 20) {
-            graphics.strokeLine(0, y + 10, mapGrid.getWidth(), y + 10);  // BORDER_OFFSET = BORDER_WIDTH / 2
+        for (int y = 0; y < worldWidth*22 + 1; y += 22) {
+            graphics.strokeLine(0, y+1, mapGrid.getWidth(), y+1);
         }
         List<WorldElement> worldElements = new ArrayList<>();
         worldElements.addAll(worldMap.getAnimalLiveList());
         worldElements.addAll(worldMap.getPlants().values());
 
-        for (WorldElement worldElement : worldElements){
-            graphics.strokeText(worldElement.toString(),
-                    worldElement.getPosition().getX() * 20 + 15,
-                    mapGrid.getHeight() - worldElement.getPosition().getY() * 20 - 5,
-                    10);
+        for (WorldElement worldElement : worldElements) {
+            graphics.setStroke(worldElement.getColor());
+            graphics.strokeText(
+                    worldElement.getSymbol(),
+                    worldElement.getPosition().getX() * 22 + 9,
+                    mapGrid.getHeight() - worldElement.getPosition().getY() * 22 - 9,
+                    10
+            );
         }
-//        graphics.setTextAlign(TextAlignment.CENTER);
-//        graphics.setTextBaseline(VPos.CENTER);
-//        graphics.setFont(new Font("Arial", size));
-//        graphics.setFill(black);
+
     }
     private void setupChart() {
         animalsSeries = new XYChart.Series<>();
