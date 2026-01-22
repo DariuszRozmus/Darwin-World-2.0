@@ -46,9 +46,6 @@ public class Simulation implements Runnable{
         this.newPlantsPerDay = data.dailyNewPlantsCount();
         this.breeder = new Breeder(data.energyToReproduce(), data.reproductionEnergyFactor(),
                 data.minMutationCount(), data.maxMutationCount());
-        this.randomPositionGenerator =
-                new RandomPositionGenerator(worldMap.getMapUpCorner().getX(),
-                worldMap.getMapUpCorner().getY(), startAnimals);
     }
 
     public void setIsRunning(boolean running) {
@@ -56,7 +53,10 @@ public class Simulation implements Runnable{
     }
 
     public void run() {
-        randomPositionGenerator.iterator()
+        RandomPositionGenerator randomPositionGeneratorHerbivore =
+                new RandomPositionGenerator(worldMap.getMapUpCorner().getX(),
+                        worldMap.getMapUpCorner().getY(), startHerbivores);
+        randomPositionGeneratorHerbivore.iterator()
                 .forEachRemaining(vector2d
                         -> worldMap.addToMap(
                                 new Animal(day,
@@ -64,7 +64,26 @@ public class Simulation implements Runnable{
                                         randomAnimalGenerator.getGeneQueue(startGeneLengthAnimals),
                                         randomAnimalGenerator.getMapDirection(),
                                         vector2d, worldMap)));
+
+        if(data.areCarnivoresPresent()) {
+            RandomPositionGenerator randomPositionGeneratorCarnivore =
+                    new RandomPositionGenerator(worldMap.getMapUpCorner().getX(),
+                    worldMap.getMapUpCorner().getY(), data.initialCarnivoresCount());
+            randomPositionGeneratorCarnivore.iterator()
+                    .forEachRemaining(vector2d
+                            -> worldMap.addToMap(
+                            new Animal(day,
+                                    startEnergyAnimal, Species.CARNIVORE,
+                                    randomAnimalGenerator.getGeneQueue(startGeneLengthAnimals),
+                                    randomAnimalGenerator.getMapDirection(),
+                                    vector2d, worldMap)));
+        }
         System.out.println(worldMap);
+        worldMap.getAnimalLiveList().forEach(animal -> System.out.println(animal.getPosition() + " Energy: " + animal.getEnergy()));
+
+        System.out.println(worldMap.getAnimalLiveList());
+        System.out.println(worldMap.getAnimalsDiedList());
+        System.out.println("Day" + day);
 
         while (!worldMap.getAnimalLiveList().isEmpty()) {
             if (!isRunning) {
