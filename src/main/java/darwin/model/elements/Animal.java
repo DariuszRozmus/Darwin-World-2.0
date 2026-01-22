@@ -40,6 +40,10 @@ public class Animal implements WorldElement{
         this.worldMap = worldMap;
     }
 
+    public int getChildrenCount(){
+        return childrenCount;
+    }
+
     public MapDirection getDirection(){
         return direction;
     }
@@ -92,6 +96,10 @@ public class Animal implements WorldElement{
 
     public void setDeathDay(int deathDay){
         this.deathDay = deathDay;
+    }
+
+    public int getDeathDay(){
+        return deathDay;
     }
 
     public boolean isAt(Vector2d position) {

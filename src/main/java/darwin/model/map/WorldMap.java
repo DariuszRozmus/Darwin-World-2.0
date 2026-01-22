@@ -15,6 +15,8 @@ import darwin.config.PreliminaryData;
 
 import java.util.*;
 
+import static java.lang.Long.sum;
+
 public class WorldMap implements MoveValidator {
 
     private Map<Vector2d, List<Animal>> animalsMap = new HashMap<Vector2d, List<Animal>>();
@@ -182,6 +184,60 @@ public class WorldMap implements MoveValidator {
 
     public Map<Vector2d, Plant> getPlants(){
         return plants;
+    }
+
+    public int getEmptyFieldsCount() {
+        int totalFields =
+                (mapUpCorner.getX() - DOWN_CORNER.getX() + 1) *
+                        (mapUpCorner.getY() - DOWN_CORNER.getY() + 1);
+
+        Set<Vector2d> occupied = new HashSet<>();
+
+        occupied.addAll(plants.keySet());
+
+        animalsMap.forEach((pos, list) -> {
+            if (list != null && !list.isEmpty()) {
+                occupied.add(pos);
+            }
+        });
+
+        return totalFields - occupied.size();
+    }
+
+    public double getAverageEnergyOfLivingAnimals() {
+        if (animalsLiveList.isEmpty()) {
+            return 0.0;
+        }
+
+        long totalEnergy = animalsLiveList.stream()
+                .mapToLong(Animal::getEnergy)
+                .sum();
+
+        return (double) totalEnergy / animalsLiveList.size();
+    }
+
+    public double getAverageLifeLengthOfDeadAnimals() {
+        if (animalsDiedList.isEmpty()) {
+            return 0.0;
+        }
+
+        long totalLifeLength = animalsDiedList.stream()
+                .mapToLong(animal -> animal.getDeathDay() - animal.getBirthDay())
+                .sum();
+
+        return (double) totalLifeLength / animalsDiedList.size();
+    }
+
+    public double getAverageChildrenCountOfLivingAnimals() {
+        if (animalsLiveList.isEmpty()) {
+            return 0.0;
+        }
+
+        long totalChildren = animalsLiveList.stream()
+                .mapToLong(Animal::getChildrenCount)
+                .sum();
+
+        return (double) totalChildren / animalsLiveList.size();
     }
 
     public String toString(){
