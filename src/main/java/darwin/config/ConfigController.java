@@ -188,6 +188,8 @@ public class ConfigController {
         simulationStarter.accept(data);
     }
 
+
+
     private PreliminaryData collectDataFromForm() {
         return new PreliminaryData(
                 (int) worldWidth.getValue(),
