@@ -9,7 +9,7 @@ public record InputData(
         String fomoRay,
         String areCarnivoresPresent,
         String initialCarnivoresCount,
-        String areOmnivoresPresent,
+//        String areOmnivoresPresent,
         String initialAnimalCount,
         String initialJunglePlantCount,
         String initialSavannaPlantCount,

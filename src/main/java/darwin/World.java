@@ -16,7 +16,7 @@ public class World {
                 new Vector2d(2,2),new Vector2d(4,4),
                 false, 0, 0,
                 false, 0,
-                false, 5,
+                5,
                 5,5,
                 3,10,
                 30,10, 2,20,

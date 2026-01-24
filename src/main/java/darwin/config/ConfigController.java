@@ -6,11 +6,11 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.AccessibleAttribute;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import static java.lang.Math.max;
@@ -18,6 +18,8 @@ import static java.lang.Math.max;
 public class ConfigController {
 
     private Consumer<PreliminaryData> simulationStarter;
+    private DataValidator dataValidator = new DataValidator();
+    private Map<String, Control> fieldMap = new HashMap<>();
 
     @FXML
     private Slider worldWidth;
@@ -52,8 +54,8 @@ public class ConfigController {
     @FXML
     private TextField initialCarnivoresCount;
 
-    @FXML
-    private TextField areOmnivoresPresent;
+//    @FXML
+//    private ToggleSwitch areOmnivoresPresent;
 
     @FXML
     private TextField initialAnimalCount;
@@ -102,6 +104,38 @@ public class ConfigController {
 
     @FXML
     void initialize() {
+
+        Tooltip tooltip = new Tooltip("To pole jest wymagane");
+        Tooltip.install(worldWidth, tooltip);
+
+        fieldMap = Map.ofEntries(
+                Map.entry("worldWidth", worldWidth),
+                Map.entry("worldHeight", worldHeight),
+                Map.entry("jungleDownLeftX", jungleDownLeftCornerX),
+                Map.entry("jungleDownLeftY", jungleDownLeftCornerY),
+                Map.entry("jungleUpRightX", jungleUpRightCornerX),
+                Map.entry("jungleUpRightY", jungleUpRightCornerY),
+                Map.entry("isFOMO", isFOMO),
+                Map.entry("fomoGroupSize", fomoGroupSize),
+                Map.entry("fomoRay", fomoRay),
+                Map.entry("areCarnivoresPresent", areCarnivoresPresent),
+                Map.entry("initialCarnivoresCount", initialCarnivoresCount),
+//                Map.entry("areOmnivoresPresent", areOmnivoresPresent),
+                Map.entry("initialAnimalCount", initialAnimalCount),
+                Map.entry("initialJunglePlantCount", initialJunglePlantCount),
+                Map.entry("initialSavannaPlantCount", initialSavannaPlantCount),
+                Map.entry("dailyNewPlantsCount", dailyNewPlantsCount),
+                Map.entry("energyToReproduce", energyToReproduce),
+                Map.entry("initialAnimalEnergy", initialAnimalEnergy),
+                Map.entry("initialGenesLength", initialGenesLength),
+                Map.entry("dailyEnergyCost", dailyEnergyCost),
+                Map.entry("plantEnergyValue", plantEnergyValue),
+                Map.entry("reproductionEnergyFactor", reproductionEnergyFactor),
+                Map.entry("minMutationCount", minMutationCount),
+                Map.entry("maxMutationCount", maxMutationCount)
+        );
+
+
         startButton.setOnAction(event -> onStartClicked());
         startDefaultButton.setOnAction(event -> onDefaultClicked());
 
@@ -145,9 +179,6 @@ public class ConfigController {
         });
         jungleDownLeftCornerY.setMax((int) jungleDownLeftCornerY.getValue());
 
-//        fomoProperty.bind(isFOMO.selectedProperty());
-//        carnivoresProperty.bind(areCarnivoresPresent.selectedProperty());
-
         areCarnivoresPresent.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             if (isNowSelected) {
                 initialCarnivoresCount.setDisable(false);
@@ -174,7 +205,7 @@ public class ConfigController {
                 new Vector2d(2,2),new Vector2d(4,4),
                 false, 0, 0,
                 false, 0,
-                false, 5,
+                5,
                 5,5,
                 3,10,
                 30,10, 2,20,
@@ -184,51 +215,54 @@ public class ConfigController {
 
     @FXML
     private void onStartClicked() {
-        PreliminaryData data = collectDataFromForm();
+        InputData inputData = collectRowData();
+        PreliminaryData data = validateData(inputData);
         simulationStarter.accept(data);
     }
 
-
-
-    private PreliminaryData collectDataFromForm() {
-        return new PreliminaryData(
-                (int) worldWidth.getValue(),
-                (int) worldHeight.getValue(),
-                new Vector2d((int) jungleDownLeftCornerX.getValue(),
-                        (int) jungleDownLeftCornerY.getValue()),
-                new Vector2d((int) jungleUpRightCornerX.getValue(),
-                        (int) jungleUpRightCornerY.getValue()),
-                isFOMO.isSelected(),
-                intOrZero(fomoGroupSize),
-                (int) fomoRay.getValue(),
-                areCarnivoresPresent.isSelected(),
-                intOrZero(initialCarnivoresCount),
-                false, //Boolean.getBoolean(areOmnivoresPresent.getText()),
-                Integer.parseInt(initialAnimalCount.getText()),
-                Integer.parseInt(initialJunglePlantCount.getText()),
-                Integer.parseInt(initialSavannaPlantCount.getText()),
-                Integer.parseInt(dailyNewPlantsCount.getText()),
-                Integer.parseInt(energyToReproduce.getText()),
-                Integer.parseInt(initialAnimalEnergy.getText()),
-                Integer.parseInt(initialGenesLength.getText()),
-                Integer.parseInt(dailyEnergyCost.getText()),
-                Integer.parseInt(plantEnergyValue.getText()),
-                Integer.parseInt(reproductionEnergyFactor.getText()),
-                Integer.parseInt(minMutationCount.getText()),
-                Integer.parseInt(maxMutationCount.getText())
+    private InputData collectRowData() {
+        return new InputData(
+                String.valueOf((int) worldWidth.getValue()),
+                String.valueOf((int) worldHeight.getValue()),
+                String.valueOf((int) jungleDownLeftCornerX.getValue()),
+                String.valueOf((int) jungleDownLeftCornerY.getValue()),
+                String.valueOf((int) jungleUpRightCornerX.getValue()),
+                String.valueOf((int) jungleUpRightCornerY.getValue()),
+                String.valueOf(isFOMO.isSelected()),
+                fomoGroupSize.getText(),
+                String.valueOf((int) fomoRay.getValue()),
+                String.valueOf(areCarnivoresPresent.isSelected()),
+                initialCarnivoresCount.getText(),
+//                areOmnivoresPresent.getText(),
+                initialAnimalCount.getText(),
+                initialJunglePlantCount.getText(),
+                initialSavannaPlantCount.getText(),
+                dailyNewPlantsCount.getText(),
+                energyToReproduce.getText(),
+                initialAnimalEnergy.getText(),
+                initialGenesLength.getText(),
+                dailyEnergyCost.getText(),
+                plantEnergyValue.getText(),
+                reproductionEnergyFactor.getText(),
+                minMutationCount.getText(),
+                maxMutationCount.getText()
         );
     }
 
-    private int intOrZero(TextField field) {
-        try {
-            String text = field.getText();
-            if (text == null || text.isBlank()) {
-                return 0;
-            }
-            return Math.max(Integer.parseInt(text), 0);
-        } catch (NumberFormatException e) {
-            return 0;
+    private PreliminaryData validateData(InputData inputData) {
+        try{
+            return dataValidator.validate(inputData);
+        } catch (InvalidDataException e){
+            System.out.println("Invalid input data: " + e.getMessage());
+            markFieldAsError(e.getField(), e.getMessage());
+            return null;
         }
     }
 
+    private void markFieldAsError(String fieldName, String message){
+        Control control = fieldMap.get(fieldName);
+        if(control != null){
+            control.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+        }
+    }
 }
