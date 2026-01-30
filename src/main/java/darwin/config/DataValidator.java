@@ -33,6 +33,79 @@ public class DataValidator {
         int minMutationCount = parseInt(data.minMutationCount(), "minMutationCount");
         int maxMutationCount = parseInt(data.maxMutationCount(), "maxMutationCount");
 
+        if (worldWidth <= 0) {
+            throw new InvalidDataException("worldWidth", "worldWidth must be greater than 0");
+        }
+        if (worldHeight <= 0) {
+            throw new InvalidDataException("worldHeight", "worldHeight must be greater than 0");
+        }
+        if (jungleDownLeftCornerX < 0) {
+            throw new InvalidDataException("jungleDownLeftX", "jungleDownLeftX must be non-negative");
+        }
+        if (jungleDownLeftCornerY < 0) {
+            throw new InvalidDataException("jungleDownLeftY", "jungleDownLeftY must be non-negative");
+        }
+        if (jungleUpRightCornerX > worldWidth) {
+            throw new InvalidDataException("jungleUpRightX", "jungleUpRightX must be less than or equal to worldWidth");
+        }
+        if (jungleUpRightCornerY > worldHeight) {
+            throw new InvalidDataException("jungleUpRightY", "jungleUpRightY must be less than or equal to worldHeight");
+        }
+        if (jungleDownLeftCornerX >= jungleUpRightCornerX) {
+            throw new InvalidDataException("jungleDownLeftX and jungleUpRightX", "jungleDownLeftX must be less than jungleUpRightX");
+        }
+        if (jungleDownLeftCornerY >= jungleUpRightCornerY) {
+            throw new InvalidDataException("jungleDownLeftY and jungleUpRightY", "jungleDownLeftY must be less than jungleUpRightY");
+        }
+        if (isFOMO) {
+            if (fomoGroupSize <= 0) {
+                throw new InvalidDataException("fomoGroupSize", "fomoGroupSize must be greater than 0 when FOMO is enabled");
+            }
+            if (fomoRay <= 0) {
+                throw new InvalidDataException("fomoRay", "fomoRay must be greater than 0 when FOMO is enabled");
+            }
+        }
+        if (areCarnivoresPresent && initialCarnivoresCount <= 0) {
+            throw new InvalidDataException("initialCarnivoresCount", "initialCarnivoresCount must be greater than 0 when carnivores are present");
+        }
+        if (initialAnimalCount <= 0) {
+            throw new InvalidDataException("initialAnimalCount", "initialAnimalCount must be greater than 0");
+        }
+        if (initialJunglePlantCount < 0) {
+            throw new InvalidDataException("initialJunglePlantCount", "initialJunglePlantCount cannot be negative");
+        }
+        if (initialSavannaPlantCount < 0) {
+            throw new InvalidDataException("initialSavannaPlantCount", "initialSavannaPlantCount cannot be negative");
+        }
+        if (dailyNewPlantsCount < 0) {
+            throw new InvalidDataException("dailyNewPlantsCount", "dailyNewPlantsCount cannot be negative");
+        }
+        if (energyToReproduce <= 0) {
+            throw new InvalidDataException("energyToReproduce", "energyToReproduce must be greater than 0");
+        }
+        if (initialAnimalEnergy <= 0) {
+            throw new InvalidDataException("initialAnimalEnergy", "initialAnimalEnergy must be greater than 0");
+        }
+        if (initialGenesLength <= 0) {
+            throw new InvalidDataException("initialGenesLength", "initialGenesLength must be greater than 0");
+        }
+        if (dailyEnergyCost < 0) {
+            throw new InvalidDataException("dailyEnergyCost", "dailyEnergyCost cannot be negative");
+        }
+        if (plantEnergyValue <= 0) {
+            throw new InvalidDataException("plantEnergyValue", "plantEnergyValue must be greater than 0");
+        }
+        if (reproductionEnergyFactor <= 0) {
+            throw new InvalidDataException("reproductionEnergyFactor", "reproductionEnergyFactor must be greater than 0");
+        }
+        if (minMutationCount < 0) {
+            throw new InvalidDataException("minMutationCount", "minMutationCount cannot be negative");
+        }
+        if (maxMutationCount < minMutationCount) {
+            throw new InvalidDataException("maxMutationCount", "maxMutationCount must be greater than or equal to minMutationCount");
+        }
+
+
         return new PreliminaryData(
             worldWidth,
             worldHeight,
