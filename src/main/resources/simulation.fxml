@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.LineChart?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            minHeight="750.0" minWidth="1250.0"
+            styleClass="background"
+            fx:controller="darwin.presenter.SimulationPresenter">
+
+    <center>
+        <VBox styleClass="background" alignment="CENTER">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <Canvas fx:id="mapGrid"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <VBox styleClass="background" spacing="15">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <LineChart fx:id="populationChart"
+                       prefHeight="200"
+                       prefWidth="400"
+                       legendVisible="true"
+                       createSymbols="false">
+                <xAxis>
+                    <NumberAxis label="Day" side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Value" side="LEFT"/>
+                </yAxis>
+            </LineChart>
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="stopButton"
+                        text="Stop"
+                        prefWidth="100"
+                        style="-fx-font-size: 13px;"/>
+                <Button fx:id="startButton"
+                        text="Run"
+                        prefWidth="100"
+                        defaultButton="true"
+                        style="-fx-font-size: 13px;"/>
+            </HBox>
+        </VBox>
+    </bottom>
+
+<!--    <right>-->
+<!--        <VBox styleClass="background" spacing="10" prefWidth="200">-->
+<!--            <padding>-->
+<!--                <Insets top="10" right="10" bottom="10" left="10"/>-->
+<!--            </padding>-->
+<!--            <Label text="Simulation Info" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>-->
+<!--            &lt;!&ndash; Tutaj możesz dodać statystyki, info itp &ndash;&gt;-->
+<!--        </VBox>-->
+<!--    </right>-->
+
+</BorderPane>

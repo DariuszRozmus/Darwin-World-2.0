@@ -1,0 +1,5 @@
+.error {
+    -fx-border-color: red;
+    -fx-border-width: 2;
+    -fx-background-color: #ffe6e6;
+}
