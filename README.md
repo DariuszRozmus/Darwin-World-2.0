@@ -4,8 +4,8 @@ Simple genetic rules drive behavior, leading to emergent population dynamics, na
 
 ## Screenshots
 
-### Simulation view
+### Simulation configuration
 ![Simulation](assets/s1.png)
 
-### Statistics panel
+### Simulation Panel
 ![Statistics](assets/s2.png)
