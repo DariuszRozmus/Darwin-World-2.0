@@ -1,5 +1,6 @@
 package darwin.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import darwin.model.Vector2d;
 import impl.jfxtras.styles.jmetro.ToggleSwitchSkin;
 import javafx.beans.property.BooleanProperty;
@@ -7,8 +8,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.AccessibleAttribute;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import org.controlsfx.control.ToggleSwitch;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -20,6 +23,7 @@ public class ConfigController {
     private Consumer<PreliminaryData> simulationStarter;
     private DataValidator dataValidator = new DataValidator();
     private Map<String, Control> fieldMap = new HashMap<>();
+    private PreliminaryData preliminaryData;
 
     @FXML
     private Slider worldWidth;
@@ -98,6 +102,13 @@ public class ConfigController {
     @FXML
     private Button startDefaultButton;
 
+    @FXML
+    private Button loadFromFileButton;
+
+    @FXML
+    private Button startFromFileButton;
+
+
     public void setSimulationStarter(Consumer<PreliminaryData> starter) {
         this.simulationStarter = starter;
     }
@@ -107,6 +118,8 @@ public class ConfigController {
 
         Tooltip tooltip = new Tooltip("To pole jest wymagane");
         Tooltip.install(worldWidth, tooltip);
+
+        startFromFileButton.setDisable(true);
 
         fieldMap = Map.ofEntries(
                 Map.entry("worldWidth", worldWidth),
@@ -220,6 +233,10 @@ public class ConfigController {
         simulationStarter.accept(data);
     }
 
+    @FXML
+    private void startFromFile(){
+        simulationStarter.accept(preliminaryData);
+    }
     private InputData collectRowData() {
         return new InputData(
                 String.valueOf((int) worldWidth.getValue()),
@@ -255,6 +272,42 @@ public class ConfigController {
         } catch (InvalidDataException e){
             System.out.println("Invalid input data: " + e.getMessage());
             markFieldAsError(e.getField(), e.getMessage());
+            return null;
+        }
+    }
+
+    @FXML
+    private void onLoadFromFileClicked() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose JSON");
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("JSON Files", "*.json")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(loadFromFileButton.getScene().getWindow());
+
+        if (selectedFile != null) {
+            InputData config = loadConfig(selectedFile);
+            if (config != null) {
+                preliminaryData = validateData(config);
+                startFromFileButton.setDisable(false);
+            }else {
+                startFromFileButton.setDisable(true);
+            }
+        }
+        else {
+            startFromFileButton.setDisable(true);
+        }
+    }
+
+    private InputData loadConfig(File file) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(file, InputData.class);
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

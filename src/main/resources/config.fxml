@@ -18,6 +18,13 @@
                     <Insets top="20" right="20" bottom="20" left="20"/>
                 </padding>
 
+                <Button fx:id="loadFromFileButton"
+                        text="Load from file"
+                        onAction="#onLoadFromFileClicked"/>
+                <Button fx:id="startFromFileButton"
+                        text="Start from file"
+                        onAction="#startFromFile"/>
+
                 <Label>World Width</Label>
                 <Slider fx:id="worldWidth" min="0" max="50" value="10" blockIncrement="1"
                         showTickLabels="true" showTickMarks="true"/>
