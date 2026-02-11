@@ -15,10 +15,10 @@ public class DataValidator {
         int jungleUpRightCornerX = parseInt(data.jungleUpRightCornerX(), "jungleUpRightX");
         int jungleUpRightCornerY = parseInt(data.jungleUpRightCornerY(), "jungleUpRightY");
         boolean isFOMO = parseBoolean(data.isFOMO(), "isFOMO");
-        int fomoGroupSize = parseInt(data.fomoGroupSize(), "fomoGroupSize");
-        int fomoRay = parseInt(data.fomoRay(), "fomoRay");
+        int fomoGroupSize = 0;
+        int fomoRay = 0;
         boolean areCarnivoresPresent = parseBoolean(data.areCarnivoresPresent(), "areCarnivoresPresent");
-        int initialCarnivoresCount = parseInt(data.initialCarnivoresCount(), "initialCarnivoresCount");
+        int initialCarnivoresCount = 0;
 //        boolean areOmnivoresPresent = parseBoolean(data.areOmnivoresPresent(), "areOmnivoresPresent");
         int initialAnimalCount = parseInt(data.initialAnimalCount(), "initialAnimalCount");
         int initialJunglePlantCount = parseInt(data.initialJunglePlantCount(), "initialJunglePlantCount");
@@ -58,15 +58,20 @@ public class DataValidator {
             throw new InvalidDataException("jungleDownLeftY and jungleUpRightY", "jungleDownLeftY must be less than jungleUpRightY");
         }
         if (isFOMO) {
+            fomoGroupSize = parseInt(data.fomoGroupSize(), "fomoGroupSize");
             if (fomoGroupSize <= 0) {
                 throw new InvalidDataException("fomoGroupSize", "fomoGroupSize must be greater than 0 when FOMO is enabled");
             }
+            fomoRay = parseInt(data.fomoRay(), "fomoRay");
             if (fomoRay <= 0) {
                 throw new InvalidDataException("fomoRay", "fomoRay must be greater than 0 when FOMO is enabled");
             }
         }
-        if (areCarnivoresPresent && initialCarnivoresCount <= 0) {
-            throw new InvalidDataException("initialCarnivoresCount", "initialCarnivoresCount must be greater than 0 when carnivores are present");
+        if (areCarnivoresPresent){
+            initialCarnivoresCount = parseInt(data.initialCarnivoresCount(), "initialCarnivoresCount");
+            if (initialCarnivoresCount <= 0) {
+                throw new InvalidDataException("initialCarnivoresCount", "initialCarnivoresCount must be greater than 0 when carnivores are present");
+            }
         }
         if (initialAnimalCount <= 0) {
             throw new InvalidDataException("initialAnimalCount", "initialAnimalCount must be greater than 0");
@@ -107,28 +112,28 @@ public class DataValidator {
 
 
         return new PreliminaryData(
-            worldWidth,
-            worldHeight,
-            new Vector2d(jungleDownLeftCornerX, jungleDownLeftCornerY),
-            new Vector2d(jungleUpRightCornerX, jungleUpRightCornerY),
-            isFOMO,
-            fomoGroupSize,
-            fomoRay,
-            areCarnivoresPresent,
-            initialCarnivoresCount,
+                worldWidth,
+                worldHeight,
+                new Vector2d(jungleDownLeftCornerX, jungleDownLeftCornerY),
+                new Vector2d(jungleUpRightCornerX, jungleUpRightCornerY),
+                isFOMO,
+                fomoGroupSize,
+                fomoRay,
+                areCarnivoresPresent,
+                initialCarnivoresCount,
 //            areOmnivoresPresent,
-            initialAnimalCount,
-            initialJunglePlantCount,
-            initialSavannaPlantCount,
-            dailyNewPlantsCount,
-            energyToReproduce,
-            initialAnimalEnergy,
-            initialGenesLength,
-            dailyEnergyCost,
-            plantEnergyValue,
-            reproductionEnergyFactor,
-            minMutationCount,
-            maxMutationCount
+                initialAnimalCount,
+                initialJunglePlantCount,
+                initialSavannaPlantCount,
+                dailyNewPlantsCount,
+                energyToReproduce,
+                initialAnimalEnergy,
+                initialGenesLength,
+                dailyEnergyCost,
+                plantEnergyValue,
+                reproductionEnergyFactor,
+                minMutationCount,
+                maxMutationCount
         );
     }
     private static boolean parseBoolean(

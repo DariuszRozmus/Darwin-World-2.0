@@ -231,6 +231,7 @@ public class ConfigController {
         InputData inputData = collectRowData();
         PreliminaryData data = validateData(inputData);
         simulationStarter.accept(data);
+        fieldMap.values().forEach(control -> control.setStyle(null));
     }
 
     @FXML
